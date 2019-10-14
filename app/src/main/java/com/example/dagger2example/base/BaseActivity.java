@@ -2,18 +2,29 @@ package com.example.dagger2example.base;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.dagger2example.EtrantInitComponent;
+import com.example.dagger2example.R;
+import com.example.dagger2example.constans.Constans;
 import com.example.dagger2example.dagger.components.ActivityComponent;
 import com.example.dagger2example.dagger.components.DaggerActivityComponent;
 import com.example.dagger2example.dagger.modules.ActivityModule;
+import com.example.dagger2example.untils.DateUtils;
+import com.example.dagger2example.untils.FormatUtils;
 import com.novoda.merlin.Bindable;
 import com.novoda.merlin.Connectable;
 import com.novoda.merlin.Disconnectable;
 import com.novoda.merlin.Merlin;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -123,5 +134,71 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     public void showErrorToasty(){
         Toasty.error(this,"That bai").show();
     };
+    protected void loadAvatar(String url, ImageView ivAvatar) {
+        if (url == null || ivAvatar == null) {
+            return;
+        }
+        Glide.with(context)
+                .load(url)
+                .placeholder(R.drawable.ic_info_outline_white_24dp)
+                .error(R.drawable.ic_error_outline_white_24dp)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontTransform()
+                .dontAnimate()
+                .into(ivAvatar);
+    }
+    protected void loadFullname(String fullName, TextView textView){
+        if (textView == null){
+            return;
+        }
+        textView.setText(fullName);
+    }
+    protected void loadDateTime(long createDated, TextView tvCreateDate) {
+        if (tvCreateDate == null) {
+            return;
+        }
+        tvCreateDate.setText(DateUtils.convertMiliToDateTime(createDated));
+    }
+    protected void loadCreateTime(long createTimed, TextView tvCreateTime) {
+        if (tvCreateTime == null) {
+            return;
+        }
+        tvCreateTime.setText(getString(R.string.history_label_create_time, DateUtils.convertMiliToTime(createTimed)));
+    }
+    protected void loadEstimatedPrice(double estimatedPrice, TextView tvPrice) {
+        if (tvPrice == null) {
+            return;
+        }
+        String estimatedPriceFormatted = FormatUtils.convertEstimatedPrice(estimatedPrice);
+        tvPrice.setText(getString(R.string.common_label_estimated_price, estimatedPriceFormatted));
+    }
+    protected void loadTripStatus(int tripStatus, TextView tvTripStatus) {
+        if (tvTripStatus == null) {
+            return;
+        }
 
+        if (tripStatus == Constans.TRIP_STATUS_69) {
+            tvTripStatus.setBackgroundResource(R.color.history_color_bg_trip_status_ok);
+            tvTripStatus.setText(R.string.history_label_trip_status_success);
+        } else {
+            tvTripStatus.setBackgroundResource(R.color.history_color_bg_trip_status_cancel);
+            tvTripStatus.setText(R.string.history_label_trip_status_cancel);
+        }
+    }
+    protected void loadListPickUpPoins(String address,TextView textView){
+        if (address == null){
+            return;
+        }
+        textView.setText(address);
+    }
+    protected void visible(final View... views) {
+        if (views != null && views.length > 0) {
+            for (View view : views) {
+                if (view != null) {
+                    view.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+
+    }
 }

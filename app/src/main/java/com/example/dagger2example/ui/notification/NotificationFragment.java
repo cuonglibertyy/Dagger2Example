@@ -99,6 +99,11 @@ public class NotificationFragment extends BaseFragment implements  NotificationC
     }
 
     @Override
+    public void showSuccessful() {
+
+    }
+
+    @Override
     public void onComplete(Results results) {
 
     }

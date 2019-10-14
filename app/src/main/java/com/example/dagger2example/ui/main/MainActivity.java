@@ -19,9 +19,15 @@ import com.example.dagger2example.ui.wallet.WalletFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.novoda.merlin.Merlin;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import es.dmoral.toasty.Toasty;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity implements MainContract.View {
 
@@ -59,7 +65,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     protected void addEvens() {
-
+        mainPresenter.checkUser();
     }
 
     @Override
@@ -139,11 +145,32 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     public void showError() {
+        Toasty.error(this,"Tài khoản bạn có người đăng nhập").show();
+    }
+
+    @Override
+    public void showSuccessful() {
 
     }
 
     @Override
     public void onComplete(Results results) {
 
+    }
+
+    @Override
+    public void showlogin() {
+        addDisposable(Observable.just(0).delay(1000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aVoid -> {
+                    openLoginScreen();
+                }));
+    }
+
+    private void openLoginScreen() {
+        showProgress(false);
+        LoginActivity.startActivity(this);
+        finish();
     }
 }

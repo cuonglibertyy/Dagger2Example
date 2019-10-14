@@ -280,4 +280,5 @@
     <string name="this_trip_has_been_received">Đã có người nhận chuyến này</string>
     <string name="error">Có lỗi xảy ra, vui lòng thử lại</string>
     <string name="username">UserName</string>
+    <string name="danhgia">Đánh giá</string>
 </resources>

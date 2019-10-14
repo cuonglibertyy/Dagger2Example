@@ -157,6 +157,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View, C
     }
 
     @Override
+    public void showSuccessful() {
+
+    }
+
+    @Override
     public void onComplete(Results results) {
 //        Log.d("dadsaa", "onComplete: " + results.getToken().toString());
         if (results != null) {

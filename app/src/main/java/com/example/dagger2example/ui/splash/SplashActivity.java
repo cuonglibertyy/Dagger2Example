@@ -7,11 +7,16 @@ import android.widget.Toast;
 import com.example.dagger2example.R;
 import com.example.dagger2example.base.BaseActivity;
 import com.example.dagger2example.constans.Constans;
+import com.example.dagger2example.data.DataManager;
+import com.example.dagger2example.model.ErrorParser;
+import com.example.dagger2example.model.error.Error;
+import com.example.dagger2example.model.history.TripPackage;
 import com.example.dagger2example.model.login.EtrantJsonResult;
 import com.example.dagger2example.model.login.Results;
 import com.example.dagger2example.ui.account.AccountFragment;
 import com.example.dagger2example.ui.login.LoginActivity;
 import com.example.dagger2example.ui.main.MainActivity;
+import com.example.dagger2example.untils.NetworkUntils;
 import com.example.dagger2example.widget.LoadingDialog;
 import com.novoda.merlin.Bindable;
 import com.novoda.merlin.Connectable;
@@ -53,7 +58,6 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
 
     @Override
     protected void addEvens() {
-
     }
 
     @Override
@@ -72,7 +76,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
 
     @Override
     protected void detachView() {
-    splashPresenter.detachView();
+        splashPresenter.detachView();
     }
 
     @Override
@@ -107,6 +111,11 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     }
 
     @Override
+    public void showSuccessful() {
+
+    }
+
+    @Override
     public void onComplete(Results results) {
 
     }
@@ -132,7 +141,6 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
         showToatDisconnect();
 
 
-
     }
 
 
@@ -151,7 +159,36 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     @Override
     public void finishGetStatusUser(EtrantJsonResult etrantJsonResult) {
 
+        showProgress(false);
+
+        Results results = etrantJsonResult.getResults();
+        if (results != null) {
+            openMainScreen();
+            return;
+        }
+
+
     }
+
+    @Override
+    public void showErrorStatus(Error errorParser, DataManager dataManager) {
+        showProgress(false);
+        if (NetworkUntils.isOnline()) {
+            if (errorParser != null && errorParser.getResults().getError() != null) {
+                String mess = errorParser.getResults().getError().getMessage();
+                if (mess.equalsIgnoreCase(Constans.user_login_other_device)) {
+                    Toasty.error(this, getString(R.string.login_other_device), 200).show();
+                    LoginActivity.startActivity(this);
+                    dataManager.clearAllUser();
+                }
+            } else {
+                Toasty.error(this, R.string.common_noti_error_message).show();
+            }
+        } else {
+            showToatDisconnect();
+        }
+    }
+
 
     @Override
     public void showLogin() {

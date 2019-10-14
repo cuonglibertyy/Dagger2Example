@@ -112,6 +112,11 @@ public class HomeFragment extends BaseFragment implements Connectable, Disconnec
     }
 
     @Override
+    public void showSuccessful() {
+
+    }
+
+    @Override
     public void onComplete(Results results) {
 
     }

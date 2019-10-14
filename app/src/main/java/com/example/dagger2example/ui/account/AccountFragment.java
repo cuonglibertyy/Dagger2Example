@@ -113,6 +113,11 @@ public class AccountFragment extends BaseFragment implements AccountContract.Vie
     }
 
     @Override
+    public void showSuccessful() {
+
+    }
+
+    @Override
     public void onComplete(Results results) {
 
     }

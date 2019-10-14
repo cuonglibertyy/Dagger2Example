@@ -22,6 +22,15 @@ public class ListPickUpPoint {
     @Expose
     private Integer type;
 
+    public ListPickUpPoint(String address, Double longitude, Double latitude, String order, Integer type) {
+        this.address = address;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.order = order;
+        this.type = type;
+    }
+
+
     public String getAddress() {
         return address;
     }

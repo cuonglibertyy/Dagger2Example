@@ -27,22 +27,22 @@ public class TripPackage {
     private String tripPackageName;
     @SerializedName("createdDate")
     @Expose
-    private Integer createdDate;
+    private Long createdDate;
     @SerializedName("censoredDate")
     @Expose
-    private Integer censoredDate;
+    private Long censoredDate;
     @SerializedName("overTime")
     @Expose
-    private Integer overTime;
+    private Long overTime;
     @SerializedName("startDate")
     @Expose
-    private Integer startDate;
+    private Long startDate;
     @SerializedName("startType")
     @Expose
-    private Integer startType;
+    private Long startType;
     @SerializedName("endDate")
     @Expose
-    private Integer endDate;
+    private Long endDate;
     @SerializedName("vehicleTypeId")
     @Expose
     private String vehicleTypeId;
@@ -51,13 +51,13 @@ public class TripPackage {
     private Boolean isRepeat;
     @SerializedName("numberOfSeats")
     @Expose
-    private Integer numberOfSeats;
+    private Long numberOfSeats;
     @SerializedName("numberOfVehicles")
     @Expose
-    private Integer numberOfVehicles;
+    private Long numberOfVehicles;
     @SerializedName("numberOfTripPerWeek")
     @Expose
-    private Integer numberOfTripPerWeek;
+    private Long numberOfTripPerWeek;
     @SerializedName("rate")
     @Expose
     private Double rate;
@@ -84,10 +84,10 @@ public class TripPackage {
     private Double price;
     @SerializedName("routeType")
     @Expose
-    private Integer routeType;
+    private Long routeType;
     @SerializedName("paidAmount")
     @Expose
-    private Integer paidAmount;
+    private Long paidAmount;
     @SerializedName("listBidPackage")
     @Expose
     private List<Object> listBidPackage = null;
@@ -111,10 +111,10 @@ public class TripPackage {
     private Boolean isFavoriteTrip;
     @SerializedName("ratingTrip")
     @Expose
-    private Integer ratingTrip;
+    private Long ratingTrip;
     @SerializedName("ownerStateCode")
     @Expose
-    private Integer ownerStateCode;
+    private Long ownerStateCode;
 
     public String getTripPackageId() {
         return tripPackageId;
@@ -164,51 +164,51 @@ public class TripPackage {
         this.tripPackageName = tripPackageName;
     }
 
-    public Integer getCreatedDate() {
+    public Long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Integer createdDate) {
+    public void setCreatedDate(Long createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Integer getCensoredDate() {
+    public Long getCensoredDate() {
         return censoredDate;
     }
 
-    public void setCensoredDate(Integer censoredDate) {
+    public void setCensoredDate(Long censoredDate) {
         this.censoredDate = censoredDate;
     }
 
-    public Integer getOverTime() {
+    public Long getOverTime() {
         return overTime;
     }
 
-    public void setOverTime(Integer overTime) {
+    public void setOverTime(Long overTime) {
         this.overTime = overTime;
     }
 
-    public Integer getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Integer startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
 
-    public Integer getStartType() {
+    public Long getStartType() {
         return startType;
     }
 
-    public void setStartType(Integer startType) {
+    public void setStartType(Long startType) {
         this.startType = startType;
     }
 
-    public Integer getEndDate() {
+    public Long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Integer endDate) {
+    public void setEndDate(Long endDate) {
         this.endDate = endDate;
     }
 
@@ -220,35 +220,35 @@ public class TripPackage {
         this.vehicleTypeId = vehicleTypeId;
     }
 
-    public Boolean getIsRepeat() {
+    public Boolean getRepeat() {
         return isRepeat;
     }
 
-    public void setIsRepeat(Boolean isRepeat) {
-        this.isRepeat = isRepeat;
+    public void setRepeat(Boolean repeat) {
+        isRepeat = repeat;
     }
 
-    public Integer getNumberOfSeats() {
+    public Long getNumberOfSeats() {
         return numberOfSeats;
     }
 
-    public void setNumberOfSeats(Integer numberOfSeats) {
+    public void setNumberOfSeats(Long numberOfSeats) {
         this.numberOfSeats = numberOfSeats;
     }
 
-    public Integer getNumberOfVehicles() {
+    public Long getNumberOfVehicles() {
         return numberOfVehicles;
     }
 
-    public void setNumberOfVehicles(Integer numberOfVehicles) {
+    public void setNumberOfVehicles(Long numberOfVehicles) {
         this.numberOfVehicles = numberOfVehicles;
     }
 
-    public Integer getNumberOfTripPerWeek() {
+    public Long getNumberOfTripPerWeek() {
         return numberOfTripPerWeek;
     }
 
-    public void setNumberOfTripPerWeek(Integer numberOfTripPerWeek) {
+    public void setNumberOfTripPerWeek(Long numberOfTripPerWeek) {
         this.numberOfTripPerWeek = numberOfTripPerWeek;
     }
 
@@ -316,19 +316,19 @@ public class TripPackage {
         this.price = price;
     }
 
-    public Integer getRouteType() {
+    public Long getRouteType() {
         return routeType;
     }
 
-    public void setRouteType(Integer routeType) {
+    public void setRouteType(Long routeType) {
         this.routeType = routeType;
     }
 
-    public Integer getPaidAmount() {
+    public Long getPaidAmount() {
         return paidAmount;
     }
 
-    public void setPaidAmount(Integer paidAmount) {
+    public void setPaidAmount(Long paidAmount) {
         this.paidAmount = paidAmount;
     }
 
@@ -380,28 +380,27 @@ public class TripPackage {
         this.ownerFullName = ownerFullName;
     }
 
-    public Boolean getIsFavoriteTrip() {
+    public Boolean getFavoriteTrip() {
         return isFavoriteTrip;
     }
 
-    public void setIsFavoriteTrip(Boolean isFavoriteTrip) {
-        this.isFavoriteTrip = isFavoriteTrip;
+    public void setFavoriteTrip(Boolean favoriteTrip) {
+        isFavoriteTrip = favoriteTrip;
     }
 
-    public Integer getRatingTrip() {
+    public Long getRatingTrip() {
         return ratingTrip;
     }
 
-    public void setRatingTrip(Integer ratingTrip) {
+    public void setRatingTrip(Long ratingTrip) {
         this.ratingTrip = ratingTrip;
     }
 
-    public Integer getOwnerStateCode() {
+    public Long getOwnerStateCode() {
         return ownerStateCode;
     }
 
-    public void setOwnerStateCode(Integer ownerStateCode) {
+    public void setOwnerStateCode(Long ownerStateCode) {
         this.ownerStateCode = ownerStateCode;
     }
-
 }

@@ -109,6 +109,11 @@ public class WalletFragment extends BaseFragment implements Connectable, Disconn
     }
 
     @Override
+    public void showSuccessful() {
+
+    }
+
+    @Override
     public void onComplete(Results results) {
 
     }

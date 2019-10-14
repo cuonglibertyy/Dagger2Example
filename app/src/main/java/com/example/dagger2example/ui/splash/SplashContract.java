@@ -1,7 +1,12 @@
 package com.example.dagger2example.ui.splash;
 
 import com.example.dagger2example.base.BaseContract;
+import com.example.dagger2example.data.DataManager;
+import com.example.dagger2example.model.ErrorParser;
+import com.example.dagger2example.model.error.Error;
 import com.example.dagger2example.model.login.EtrantJsonResult;
+
+import org.xml.sax.ErrorHandler;
 
 public interface SplashContract {
 
@@ -9,6 +14,7 @@ public interface SplashContract {
 
         void finishCheckLogin(boolean isLoggin);
         void finishGetStatusUser(EtrantJsonResult etrantJsonResult);
+        void showErrorStatus(Error errorParser, DataManager dataManager);
         void showLogin();
         void showMain();
 
@@ -18,6 +24,7 @@ public interface SplashContract {
 
         void CheckLoginUser();
         void CheckLoggin();
+
 
     }
 }

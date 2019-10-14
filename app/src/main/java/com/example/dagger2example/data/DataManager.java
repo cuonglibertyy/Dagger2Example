@@ -3,14 +3,14 @@ package com.example.dagger2example.data;
 import com.example.dagger2example.data.remote.EtranServiceUrl;
 import com.example.dagger2example.data.sharepreferences.PreferenHelper;
 import com.example.dagger2example.model.history.History;
+import com.example.dagger2example.model.historydetail.HistoryDetail;
+import com.example.dagger2example.model.historydetail.TripPackageDetail;
 import com.example.dagger2example.model.login.EtrantJsonResult;
 import com.example.dagger2example.model.login.Token;
 import com.example.dagger2example.model.login.UserInfo;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 
 public class DataManager implements EtranServiceUrl, PreferenHelper {
 
@@ -30,9 +30,25 @@ public class DataManager implements EtranServiceUrl, PreferenHelper {
     }
 
     @Override
-    public Observer<History> GetHistory(String tokenKey, ResponseBody body) {
-        return etranServiceUrl.GetHistory(tokenKey, body);
+    public Observable<EtrantJsonResult> getLastStatusDriver(String tokenKey) {
+        return etranServiceUrl.getLastStatusDriver(tokenKey);
     }
+
+    @Override
+    public Observable<History> getHistory(String tokenKey, RequestBody body) {
+        return etranServiceUrl.getHistory(tokenKey,body);
+    }
+
+    @Override
+    public Observable<HistoryDetail> getHistoryDetail(String tokenKey, RequestBody body) {
+        return etranServiceUrl.getHistoryDetail(tokenKey,body);
+    }
+
+    @Override
+    public Observable<TripPackageDetail> postRatingBar(String tokenKey, RequestBody body) {
+        return etranServiceUrl.postRatingBar(tokenKey,body);
+    }
+
 
     /////---------------------PreferencesHelper-------------------------/////
 

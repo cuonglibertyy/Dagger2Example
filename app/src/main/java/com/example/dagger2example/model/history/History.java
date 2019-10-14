@@ -22,6 +22,8 @@ public class History {
     @Expose
     private Results results;
 
+   private History history;
+
     public Integer getCode() {
         return code;
     }

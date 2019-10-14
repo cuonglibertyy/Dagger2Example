@@ -5,6 +5,7 @@ import com.example.dagger2example.dagger.modules.ActivityModule;
 import com.example.dagger2example.dagger.scopes.ActivityScope;
 import com.example.dagger2example.ui.account.AccountFragment;
 import com.example.dagger2example.ui.history.HistoryFragment;
+import com.example.dagger2example.ui.history.historydetail.HistoryDetailActivity;
 import com.example.dagger2example.ui.home.HomeFragment;
 import com.example.dagger2example.ui.login.LoginActivity;
 import com.example.dagger2example.ui.main.MainActivity;
@@ -36,4 +37,6 @@ public interface ActivityComponent {
     void inject(MainActivity mainActivity);
 
     void inject(WalletFragment walletFragment);
+
+    void inject(HistoryDetailActivity historyDetailActivity);
 }

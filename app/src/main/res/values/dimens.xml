@@ -5,4 +5,19 @@
     <dimen name="space_130">130dp</dimen>
     <dimen name="space_80">80dp</dimen>
     <dimen name="space_8">8dp</dimen>
+    <dimen name="space_16">16dp</dimen>
+    <dimen name="space_3">3dp</dimen>
+    <dimen name="space_05">5dp</dimen>
+    <dimen name="space_20">20dp</dimen>
+    <dimen name="space_4">4dp</dimen>
+    <dimen name="space_30">30dp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="space_48">48</dimen>
+    <dimen name="space_5">5dp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="space_120">120dp</dimen>
+    <dimen name="space_24">24dp</dimen>
+    <dimen name="space_44">44dp</dimen>
+    <dimen name="space_50">50dp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
 </resources>

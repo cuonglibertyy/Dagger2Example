@@ -1,5 +1,6 @@
 package com.example.dagger2example.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +27,9 @@ import com.novoda.merlin.Connectable;
 import com.novoda.merlin.Disconnectable;
 import com.novoda.merlin.Merlin;
 import com.trello.rxlifecycle2.components.support.RxFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -73,6 +78,7 @@ public abstract class BaseFragment extends RxFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.activity = (FragmentActivity) context;
+
     }
 
     @Override
@@ -90,6 +96,14 @@ public abstract class BaseFragment extends RxFragment {
         detachView();
         super.onDestroyView();
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+
 
     protected abstract void setupComponent();
 

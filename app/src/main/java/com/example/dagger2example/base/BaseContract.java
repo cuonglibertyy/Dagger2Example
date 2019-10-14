@@ -12,6 +12,7 @@ public interface BaseContract {
         void showError(@StringRes int stringResId);
 
         void showError();
+        void showSuccessful();
 
         void onComplete(Results results);
     }
