@@ -15,7 +15,7 @@
     <dimen name="space_48">48</dimen>
     <dimen name="space_5">5dp</dimen>
     <dimen name="text_size_20">20sp</dimen>
-    <dimen name="space_120">120dp</dimen>
+    <dimen name="space_120">100dp</dimen>
     <dimen name="space_24">24dp</dimen>
     <dimen name="space_44">44dp</dimen>
     <dimen name="space_50">50dp</dimen>

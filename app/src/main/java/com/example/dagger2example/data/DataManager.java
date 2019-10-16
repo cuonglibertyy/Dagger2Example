@@ -2,6 +2,8 @@ package com.example.dagger2example.data;
 
 import com.example.dagger2example.data.remote.EtranServiceUrl;
 import com.example.dagger2example.data.sharepreferences.PreferenHelper;
+import com.example.dagger2example.model.error.Error;
+import com.example.dagger2example.model.error.Results;
 import com.example.dagger2example.model.history.History;
 import com.example.dagger2example.model.historydetail.HistoryDetail;
 import com.example.dagger2example.model.historydetail.TripPackageDetail;
@@ -47,6 +49,11 @@ public class DataManager implements EtranServiceUrl, PreferenHelper {
     @Override
     public Observable<TripPackageDetail> postRatingBar(String tokenKey, RequestBody body) {
         return etranServiceUrl.postRatingBar(tokenKey,body);
+    }
+
+    @Override
+    public Observable<Error> postMyLocation(String tokenKey, RequestBody body) {
+        return etranServiceUrl.postMyLocation(tokenKey,body);
     }
 
 

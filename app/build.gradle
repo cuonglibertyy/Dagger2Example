@@ -5,11 +5,12 @@ android {
     buildToolsVersion "29.0.1"
     defaultConfig {
         applicationId "com.example.dagger2example"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -30,6 +31,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+
+
+    //Map
+//    implementation 'com.github.mancj:MaterialSearchBar:0.8.2'
+//    implementation 'com.google.android.libraries.places:places:2.0.0'
+//    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
     // Dagger2 TODO :Ok
     implementation 'com.google.dagger:dagger:2.10'
@@ -98,6 +106,12 @@ dependencies {
 
     // eventbus
     implementation 'org.greenrobot:eventbus:3.1.1'
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.github.mancj:MaterialSearchBar:0.8.2'
+    implementation 'com.google.android.libraries.places:places:2.0.0'
+
+    implementation 'com.android.support:multidex:1.0.3'
 
 
 }

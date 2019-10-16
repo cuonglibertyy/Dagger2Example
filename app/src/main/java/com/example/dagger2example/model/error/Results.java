@@ -4,14 +4,27 @@ package com.example.dagger2example.model.error;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.dagger2example.untils.ErrorHandle;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Results implements Parcelable {
+public class Results extends ErrorHandle implements Parcelable {
 
     @SerializedName("error")
     @Expose
     private Error_ error;
+
+    @SerializedName("message")
+    @Expose
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     protected Results(Parcel in) {
     }

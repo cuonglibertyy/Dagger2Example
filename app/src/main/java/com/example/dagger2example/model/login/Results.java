@@ -11,6 +11,7 @@ public class Results {
     private UserInfo userInfo;
     @SerializedName("token")
     @Expose
+
     private Token token;
 
     public UserInfo getUserInfo() {

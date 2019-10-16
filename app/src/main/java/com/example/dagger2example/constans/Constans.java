@@ -16,6 +16,10 @@ public class Constans {
 
 
 
+    public static final String KEY_START_LOCATION = "startlocation";
+    public static final String KEY_DROFF_ONE = "dropoffone";
+
+
     public static final String Disconnect = " Mất kết nối dữ liệu";
     public static final String Connect="Kết nối mạng thành công";
 

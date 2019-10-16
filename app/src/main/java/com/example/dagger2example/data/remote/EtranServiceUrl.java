@@ -1,6 +1,8 @@
 package com.example.dagger2example.data.remote;
 
 import com.example.dagger2example.constans.Constans;
+import com.example.dagger2example.model.error.Error;
+import com.example.dagger2example.model.error.Results;
 import com.example.dagger2example.model.history.History;
 import com.example.dagger2example.model.historydetail.HistoryDetail;
 import com.example.dagger2example.model.historydetail.TripPackageDetail;
@@ -32,4 +34,7 @@ public interface EtranServiceUrl {
     @POST("api-driver/ratingtrippackage")
     Observable<TripPackageDetail> postRatingBar(@Header(Constans.VALUE_NAME_TOKEN) String tokenKey,
                                                 @Body RequestBody body);
+    @POST("api-trip/findTripByLocation")
+    Observable<Error> postMyLocation(@Header(Constans.VALUE_NAME_TOKEN) String tokenKey,
+                                     @Body RequestBody body);
 }

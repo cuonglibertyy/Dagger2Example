@@ -40,6 +40,7 @@ public class LoginPresenter extends RxPresenter<LoginContract.View>
     @Override
     public void checklogin(String phoneNumber) {
         mView.showProgress(true);
+
         Map<String, String> httpBody = new HashMap<>();
         httpBody.put(Constans.KEY_LOGIN_STATE_CODE, "84");
         httpBody.put(Constans.KEY_LOGIN_PHONE_NUMBER, phoneNumber);

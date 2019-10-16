@@ -2,7 +2,7 @@
     <string name="app_name">Dagger2Example</string>
     <string name="error_missing_network">Mất kết nối với máy chủ. Xin hãy kiểm tra lại mạng!</string>
     <!--common string network end-->
-
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyA9rTnxqBiap6yioOqcGREcyrcZno2ShGU</string>
     <!--common string start-->
     <string name="common_label_no_connection">No connection</string>
     <string name="common_label_back_online">Back online</string>

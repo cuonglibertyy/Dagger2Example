@@ -1,10 +1,11 @@
 
 package com.example.dagger2example.model.error;
 
+import com.example.dagger2example.untils.ErrorHandle;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Error {
+public class Error extends ErrorHandle {
 
     @SerializedName("code")
     @Expose
