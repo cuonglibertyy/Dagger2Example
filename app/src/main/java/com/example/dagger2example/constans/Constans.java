@@ -5,6 +5,9 @@ public class Constans {
     public static final String COMMON_PREF_NAME = "ETRANS_PREF";
     public static final String KEY_RATING = "ratingTrip";
     public static final String RATING_SUCCESSFUL = "Đánh giá thành công";
+    public static final String KEY_FIREBASE_SERVICE_ID ="objectId" ;
+    public static final String KEY_NOTIFICATION_CODE ="notificationCode" ;
+    public static final String KEY_NOTIFICATION_CONTENT ="notificationContent" ;
     public static String ETRAN_URL = "https://ego-local-252402.appspot.com/";
 
     public static final String KEY_LOGIN_STATE_CODE = "stateCode";
@@ -17,7 +20,8 @@ public class Constans {
 
 
     public static final String KEY_START_LOCATION = "startlocation";
-    public static final String KEY_DROFF_ONE = "dropoffone";
+    public static final String KEY_DROFF_ONE = "dropOffOne";
+    public static final String KEY_DROFF_TWO = "dropOffTwo";
 
 
     public static final String Disconnect = " Mất kết nối dữ liệu";

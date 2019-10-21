@@ -1,5 +1,6 @@
 package com.example.dagger2example.ui.history;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -15,6 +16,8 @@ import com.example.dagger2example.model.login.Results;
 import com.example.dagger2example.ui.history.adapter.HistoryAdapter;
 import com.example.dagger2example.ui.history.historydetail.HistoryDetailActivity;
 import com.example.dagger2example.widget.LoadingDialog;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +57,7 @@ public class HistoryFragment extends BaseFragment implements HistoryContract.Vie
         return fragment;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -74,10 +78,12 @@ public class HistoryFragment extends BaseFragment implements HistoryContract.Vie
 //            presenter.getHistory(String.valueOf(page), String.valueOf(count));
 //            Log.d("saddsasaddsad", "onPause: ");
 //            return;
-//        }
+//
 
 
     }
+
+
 
     @Override
     protected void attachView() {
@@ -150,10 +156,12 @@ public class HistoryFragment extends BaseFragment implements HistoryContract.Vie
                 return;
             }
 
+
             String tripId = trip.getTripPackageId();
             if (tripId == null) {
                 return;
             }
+
             Log.d("sadsadsasad", "addEvents: " + tripId);
             HistoryDetailActivity.startActivity(context, tripId);
         });

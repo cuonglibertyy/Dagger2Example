@@ -3,13 +3,17 @@ package com.example.dagger2example.data;
 import com.example.dagger2example.data.remote.EtranServiceUrl;
 import com.example.dagger2example.data.sharepreferences.PreferenHelper;
 import com.example.dagger2example.model.error.Error;
-import com.example.dagger2example.model.error.Results;
 import com.example.dagger2example.model.history.History;
 import com.example.dagger2example.model.historydetail.HistoryDetail;
 import com.example.dagger2example.model.historydetail.TripPackageDetail;
 import com.example.dagger2example.model.login.EtrantJsonResult;
 import com.example.dagger2example.model.login.Token;
 import com.example.dagger2example.model.login.UserInfo;
+import com.example.dagger2example.model.typebike.Result;
+import com.example.dagger2example.model.typebike.Results;
+import com.example.dagger2example.model.typebike.Typebike;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -54,6 +58,11 @@ public class DataManager implements EtranServiceUrl, PreferenHelper {
     @Override
     public Observable<Error> postMyLocation(String tokenKey, RequestBody body) {
         return etranServiceUrl.postMyLocation(tokenKey,body);
+    }
+
+    @Override
+    public Observable<Typebike> postTypeBike(String tokenKey, RequestBody body) {
+        return etranServiceUrl.postTypeBike(tokenKey,body);
     }
 
 
@@ -124,6 +133,7 @@ public class DataManager implements EtranServiceUrl, PreferenHelper {
     public void clearAllUser() {
         clearUserInfo();
         clearToken();
+        clearDeviceId();
 
     }
 }

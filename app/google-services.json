@@ -1,42 +1,79 @@
 {
   "project_info": {
-    "project_number": "68430253779",
-    "firebase_url": "https://chatapp-519fa.firebaseio.com",
-    "project_id": "chatapp-519fa",
-    "storage_bucket": "chatapp-519fa.appspot.com"
+    "project_number": "459205912969",
+    "firebase_url": "https://android-etranspro-def7a.firebaseio.com",
+    "project_id": "android-etranspro-def7a",
+    "storage_bucket": "android-etranspro-def7a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:68430253779:android:653b3d6f804b1c0b",
+        "mobilesdk_app_id": "1:459205912969:android:b34da914714175a4",
         "android_client_info": {
-          "package_name": "com.example.appchat"
+          "package_name": "com.epr.etransprodriver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "68430253779-83ber9bgvfk40d1i9c8hu72pkafjn5bq.apps.googleusercontent.com",
+          "client_id": "459205912969-vjco2eduvlb1ul4p3degjc3fmppbjdug.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.appchat",
-            "certificate_hash": "39b8550a22203f6248da9543c58bd6c665cfd990"
+            "package_name": "com.epr.etransprodriver",
+            "certificate_hash": "9e6f80cd9d98afdc1e64048fa15daaf994b1346d"
           }
         },
         {
-          "client_id": "68430253779-8a1fvcfcjpnh5lna8kfh4g9t90beorn1.apps.googleusercontent.com",
+          "client_id": "459205912969-bqqc97njrgnnjod7f0f42c973c4jdldi.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDCtS5fEOYuxMEOM4rtRBKHliNmBrpw_N4"
+          "current_key": "AIzaSyCzqORmt76_AJ4rLeZ_OOelkquNpjxCudQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "68430253779-8a1fvcfcjpnh5lna8kfh4g9t90beorn1.apps.googleusercontent.com",
+              "client_id": "459205912969-bqqc97njrgnnjod7f0f42c973c4jdldi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459205912969:android:52287a0bf114f377",
+        "android_client_info": {
+          "package_name": "com.eprtech.etrans"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459205912969-tjn7270a03uhp4s0a6n2ll83bshh68la.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eprtech.etrans",
+            "certificate_hash": "671b95084d6896ccfcee117d7d5e58e00e9098eb"
+          }
+        },
+        {
+          "client_id": "459205912969-bqqc97njrgnnjod7f0f42c973c4jdldi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzqORmt76_AJ4rLeZ_OOelkquNpjxCudQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "459205912969-bqqc97njrgnnjod7f0f42c973c4jdldi.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

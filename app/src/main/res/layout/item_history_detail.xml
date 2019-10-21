@@ -367,7 +367,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:text="rất tốt"
+
             android:textColor="@color/black"
             android:textSize="15sp"
             android:textStyle="normal"

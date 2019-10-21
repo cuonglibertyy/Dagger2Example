@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.dagger2example.R;
 import com.example.dagger2example.base.BaseActivity;
 import com.example.dagger2example.constans.Constans;
+import com.example.dagger2example.model.history.TripPackage;
 import com.example.dagger2example.model.historydetail.HistoryDetail;
 import com.example.dagger2example.model.historydetail.ListPickUpPoint;
 import com.example.dagger2example.model.historydetail.Trip;
@@ -27,6 +28,10 @@ import com.example.dagger2example.model.login.Results;
 import com.example.dagger2example.widget.LoadingDialog;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.novoda.merlin.Merlin;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -79,13 +84,26 @@ public class HistoryDetailActivity extends BaseActivity implements HistoryDetail
     @BindView(R.id.btn_vote)
     Button btn_vote;
 
-    private String rating = "";
+    private float rating  ;
 
     @Inject
     HistoryDetailPresenter historyDetailPresenter;
 
     private String tripId;
     private Results results;
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 
 
     public static void startActivity(Context context, String tripId) {
@@ -119,7 +137,8 @@ public class HistoryDetailActivity extends BaseActivity implements HistoryDetail
                 .throttleFirst(2, TimeUnit.SECONDS)
                 .compose(bindToLifecycle())
                 .subscribe(avoid -> {
-                    rating = String.valueOf(ratingBar.getRating());
+                    rating = ratingBar.getRating();
+                    Log.d("đâssads", "addEvens: "+rating);
                     historyDetailPresenter.getRatingBar(tripId, rating);
 //            Toast.makeText(context, rating, Toast.LENGTH_SHORT).show();
                     onBackPressed();

@@ -30,23 +30,32 @@
         app:mt_speechMode="false" />
 
     <LinearLayout
-        android:id="@+id/layoutBottomSheet"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="0dp"
-        android:orientation="vertical"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:id="@+id/viewTypeBike"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="450dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_typeBike"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
         <Button
-            android:layout_margin="15dp"
-            android:layout_alignParentBottom="true"
             android:id="@+id/btn_direction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="15dp"
             android:background="@color/colorPrimary"
-            android:text="Tìm kiếm" />
-    </LinearLayout>
+            android:text="Gọi xe" />
 
+    </LinearLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

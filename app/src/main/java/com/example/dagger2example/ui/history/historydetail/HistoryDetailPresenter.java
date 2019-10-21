@@ -88,7 +88,7 @@ public class HistoryDetailPresenter extends RxPresenter<HistoryDetailContract.Vi
 
 
     @Override
-    public void getRatingBar(String tripId, String ratingTrip) {
+    public void getRatingBar(String tripId, float ratingTrip) {
 
             if (tripId == null){
                 Log.d("sadasasd", "lỗi k có tripID: ");
@@ -111,7 +111,7 @@ public class HistoryDetailPresenter extends RxPresenter<HistoryDetailContract.Vi
 
         Map<String, String> httpBody = new HashMap<>();
         httpBody.put(Constans.KEY_HISTORY_DETAIL_TRIP_ID,tripId);
-        httpBody.put(Constans.KEY_RATING,ratingTrip);
+        httpBody.put(Constans.KEY_RATING, String.valueOf(ratingTrip));
 
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
                 (new JSONObject(httpBody)).toString());

@@ -7,10 +7,13 @@ import com.example.dagger2example.data.DataManager;
 import com.example.dagger2example.model.login.Token;
 import com.example.dagger2example.model.login.UserInfo;
 import com.example.dagger2example.untils.ErrorHandle;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.novoda.merlin.Logger;
 
 import org.xml.sax.ErrorHandler;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -26,6 +29,32 @@ public class SplashPresenter extends RxPresenter<SplashContract.View>
     @Inject
     public SplashPresenter(DataManager dataManager) {
         this.dataManager = dataManager;
+    }
+
+    @Override
+    public void getDeviceIdFirebase() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                    }
+                    if (task.getResult()!=null){
+                        String deviceId = task.getResult().getToken();
+                        mView.showDeviceIdFirebase(deviceId);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.d("easdasdsa", "error: "+e);
+
+                });
+    }
+
+    @Override
+    public void saveDeviceIdSharedPreferences(String deviceId) {
+            if (deviceId !=null){
+                dataManager.setDeviceId(deviceId);
+                mView.finishCheckDeviceId();
+            }
     }
 
     @Override

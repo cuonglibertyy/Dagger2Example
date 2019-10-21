@@ -21,7 +21,7 @@ public interface HistoryDetailContract {
 
         void getHistoryDetail(String tripId);
         void getTripDetail(String tripId);
-        void getRatingBar(String tripId,String ratingTrip);
+        void getRatingBar(String tripId,float ratingTrip);
 
 
     }

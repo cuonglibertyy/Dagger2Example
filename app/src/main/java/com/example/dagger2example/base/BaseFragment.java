@@ -79,12 +79,14 @@ public abstract class BaseFragment extends RxFragment {
         super.onAttach(context);
         this.activity = (FragmentActivity) context;
 
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         this.activity = null;
+
     }
 
     @Override

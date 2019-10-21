@@ -2,11 +2,15 @@ package com.example.dagger2example.data.remote;
 
 import com.example.dagger2example.constans.Constans;
 import com.example.dagger2example.model.error.Error;
-import com.example.dagger2example.model.error.Results;
 import com.example.dagger2example.model.history.History;
 import com.example.dagger2example.model.historydetail.HistoryDetail;
 import com.example.dagger2example.model.historydetail.TripPackageDetail;
 import com.example.dagger2example.model.login.EtrantJsonResult;
+import com.example.dagger2example.model.typebike.Result;
+import com.example.dagger2example.model.typebike.Results;
+import com.example.dagger2example.model.typebike.Typebike;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -37,4 +41,8 @@ public interface EtranServiceUrl {
     @POST("api-trip/findTripByLocation")
     Observable<Error> postMyLocation(@Header(Constans.VALUE_NAME_TOKEN) String tokenKey,
                                      @Body RequestBody body);
+
+    @POST("config/getLstCarType")
+    Observable<Typebike> postTypeBike(@Header(Constans.VALUE_NAME_TOKEN)String tokenKey,
+                                          @Body RequestBody body);
 }

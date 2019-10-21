@@ -26,7 +26,7 @@ public class AccountFragment extends BaseFragment implements AccountContract.Vie
     Button btn_logout;
 
     @BindView(R.id.img_avatar)
-    ImageView img_avatar;
+    CircleImageView img_avatar;
 
     @BindView(R.id.tv_name)
     TextView tv_name;

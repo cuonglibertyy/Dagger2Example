@@ -9,12 +9,14 @@ import com.example.dagger2example.constans.Constans;
 import com.example.dagger2example.data.DataManager;
 import com.example.dagger2example.model.login.Results;
 import com.example.dagger2example.model.login.Token;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.jakewharton.rxbinding3.view.RxView;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -29,6 +31,7 @@ public class LoginPresenter extends RxPresenter<LoginContract.View>
 
 
     DataManager dataManager;
+    String deviceId ="";
 
     @Inject
     public LoginPresenter(DataManager dataManager) {
@@ -41,8 +44,26 @@ public class LoginPresenter extends RxPresenter<LoginContract.View>
     public void checklogin(String phoneNumber) {
         mView.showProgress(true);
 
+
+         deviceId = FirebaseInstanceId.getInstance().getToken();
+        Log.d("asdsadasd1", "checklogin: "+deviceId);
+        if (deviceId == null) {
+            FirebaseInstanceId.getInstance().getInstanceId()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            deviceId = Objects.requireNonNull(task.getResult()).getToken();
+                            Log.d("asdsadasd2", "checklogin: "+deviceId);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.d("easdasdsa", "error: "+e);
+
+                    });
+        }
+
         Map<String, String> httpBody = new HashMap<>();
         httpBody.put(Constans.KEY_LOGIN_STATE_CODE, "84");
+        httpBody.put(Constans.KEY_LOGIN_DEVICE_ID,deviceId);
         httpBody.put(Constans.KEY_LOGIN_PHONE_NUMBER, phoneNumber);
         httpBody.put(Constans.KEY_LOGIN_DEVICE_TYPE, "1");
 
@@ -58,7 +79,7 @@ public class LoginPresenter extends RxPresenter<LoginContract.View>
                             mView.onComplete(results);
                         },
                         (error) -> {
-                          mView.showError();
+                            mView.showError();
                             mView.showProgress(false);
                         }
                 );

@@ -149,6 +149,11 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     }
 
     @Override
+    public void finishCheckDeviceId() {
+        showLogin();
+    }
+
+    @Override
     public void finishCheckLogin(boolean isLoggin) {
         if (isLoggin) {
             showProgress(true);
@@ -208,6 +213,12 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
                 .subscribe(aVoid -> {
                     openMainScreen();
                 }));
+    }
+
+    @Override
+    public void showDeviceIdFirebase(String deviceId) {
+        splashPresenter.saveDeviceIdSharedPreferences(deviceId);
+
     }
 
     private void openMainScreen() {
