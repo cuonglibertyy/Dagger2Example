@@ -9,6 +9,8 @@ public class Constans {
     public static final String KEY_NOTIFICATION_CODE ="notificationCode" ;
     public static final String KEY_NOTIFICATION_CONTENT ="notificationContent" ;
     public static String ETRAN_URL = "https://ego-local-252402.appspot.com/";
+        public static String GOOGLE_SERVICE_URL = "https://maps.googleapis.com/maps/api/";
+        public static String KEY_GOOGLE_DIRECTION = "AIzaSyA9rTnxqBiap6yioOqcGREcyrcZno2ShGU";
 
     public static final String KEY_LOGIN_STATE_CODE = "stateCode";
     public static final String KEY_LOGIN_DEVICE_ID = "deviceId";

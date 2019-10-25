@@ -13,18 +13,75 @@
     <!--</androidx.recyclerview.widget.RecyclerView>-->
 
     <LinearLayout
+
+        android:weightSum="9"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img_bookbike"
+        <RelativeLayout
+            android:layout_weight="3"
             android:layout_margin="@dimen/dp_10"
-            app:civ_border_color="#E67E22"
-            app:civ_border_width="@dimen/space_5"
-            android:src="@drawable/logobike"
-            android:layout_width="46dp"
-            android:layout_height="46dp" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_bookbike"
+                android:layout_margin="@dimen/dp_10"
+                app:civ_border_color="#E67E22"
+                app:civ_border_width="1dp"
+                android:src="@drawable/logobike"
+                android:layout_width="46dp"
+                android:layout_height="46dp" />
+            <TextView
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_below="@id/img_bookbike"
+                android:text="@string/bike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_weight="3"
+            android:layout_margin="@dimen/dp_10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_car4"
+                android:layout_margin="@dimen/dp_10"
+                app:civ_border_color="#E67E22"
+                app:civ_border_width="1dp"
+                android:src="@drawable/car"
+                android:layout_width="46dp"
+                android:layout_height="46dp" />
+            <TextView
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_below="@id/img_car4"
+                android:text="@string/car4slot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_weight="3"
+            android:layout_margin="@dimen/dp_10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_car7"
+                android:layout_margin="@dimen/dp_10"
+                app:civ_border_color="#E67E22"
+                app:civ_border_width="1dp"
+                android:src="@drawable/suv"
+                android:layout_width="46dp"
+                android:layout_height="46dp" />
+            <TextView
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_below="@id/img_car7"
+                android:text="@string/car7slot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

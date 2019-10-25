@@ -1,32 +1,32 @@
 package com.example.dagger2example.data;
 
 import com.example.dagger2example.data.remote.EtranServiceUrl;
+import com.example.dagger2example.data.remote.GoogleService;
 import com.example.dagger2example.data.sharepreferences.PreferenHelper;
 import com.example.dagger2example.model.error.Error;
+import com.example.dagger2example.model.geocode.Geocode;
 import com.example.dagger2example.model.history.History;
 import com.example.dagger2example.model.historydetail.HistoryDetail;
 import com.example.dagger2example.model.historydetail.TripPackageDetail;
 import com.example.dagger2example.model.login.EtrantJsonResult;
 import com.example.dagger2example.model.login.Token;
 import com.example.dagger2example.model.login.UserInfo;
-import com.example.dagger2example.model.typebike.Result;
-import com.example.dagger2example.model.typebike.Results;
 import com.example.dagger2example.model.typebike.Typebike;
-
-import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 
-public class DataManager implements EtranServiceUrl, PreferenHelper {
+public class DataManager implements EtranServiceUrl,GoogleService, PreferenHelper {
 
     private EtranServiceUrl etranServiceUrl;
     private PreferenHelper preferenHelper;
+    private GoogleService googleService;
 
 
-    public DataManager(EtranServiceUrl etranServiceUrl, PreferenHelper preferenHelper) {
+    public DataManager(EtranServiceUrl etranServiceUrl, PreferenHelper preferenHelper,GoogleService googleService) {
         this.etranServiceUrl = etranServiceUrl;
         this.preferenHelper = preferenHelper;
+        this.googleService = googleService;
     }
 
 
@@ -135,5 +135,15 @@ public class DataManager implements EtranServiceUrl, PreferenHelper {
         clearToken();
         clearDeviceId();
 
+    }
+
+    @Override
+    public Observable<Geocode> getChooseLocation(String latlng, String googleApiKey) {
+        return googleService.getChooseLocation(latlng,googleApiKey);
+    }
+
+    @Override
+    public Observable<Geocode> getChooseLocationPlace_id(String place_id, String googleApiKey) {
+        return googleService.getChooseLocationPlace_id(place_id,googleApiKey);
     }
 }

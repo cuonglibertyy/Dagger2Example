@@ -6,11 +6,7 @@ import com.example.dagger2example.model.history.History;
 import com.example.dagger2example.model.historydetail.HistoryDetail;
 import com.example.dagger2example.model.historydetail.TripPackageDetail;
 import com.example.dagger2example.model.login.EtrantJsonResult;
-import com.example.dagger2example.model.typebike.Result;
-import com.example.dagger2example.model.typebike.Results;
 import com.example.dagger2example.model.typebike.Typebike;
-
-import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;

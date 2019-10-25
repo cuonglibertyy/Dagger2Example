@@ -1,34 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background_item"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="100dp"
+    android:layout_height="100dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_gravity="center"
         android:id="@+id/img_tyoeBike"
         tools:src="@tools:sample/avatars[2]"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
+        android:layout_width="@dimen/space_50"
+        android:layout_height="@dimen/space_50" />
 
     <TextView
+        android:layout_gravity="center"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         android:id="@+id/tv_vehicleId"
         android:text="xe 4 chỗ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:text="260.000đ"
-        android:id="@+id/estimatedPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/estimatedDuration"
-        android:text="16phut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/estimatedDistance"
-        android:text="16km"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

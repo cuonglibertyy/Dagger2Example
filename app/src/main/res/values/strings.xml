@@ -281,4 +281,7 @@
     <string name="error">Có lỗi xảy ra, vui lòng thử lại</string>
     <string name="username">UserName</string>
     <string name="danhgia">Đánh giá</string>
+    <string name="car4slot">Xe 4 chỗ</string>
+    <string name="bike">Xe Máy</string>
+    <string name="car7slot">Xe 7 chỗ</string>
 </resources>

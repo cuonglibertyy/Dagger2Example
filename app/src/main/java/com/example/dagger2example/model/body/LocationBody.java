@@ -1,10 +1,20 @@
-
-package com.example.dagger2example.model.typebike;
+package com.example.dagger2example.model.body;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Result {
+public class LocationBody {
+    @SerializedName("startlocation")
+    @Expose
+    private StartLocation startlocation;
+
+    @SerializedName("dropOffOne")
+    @Expose
+    private DropOffOne dropOffOne;
+
+    @SerializedName("dropOffTwo")
+    @Expose
+    private DropOffTwo dropOffTwo;
 
     @SerializedName("vehicleTypeId")
     @Expose
@@ -21,9 +31,44 @@ public class Result {
     @SerializedName("estimatedDuration")
     @Expose
     private Long estimatedDuration;
-    @SerializedName("carTypeName")
-    @Expose
-    private String carTypeName;
+
+
+
+    public LocationBody(StartLocation startlocation, DropOffOne dropOffOne, DropOffTwo dropOffTwo, Long estimatedDistance, Long estimatedDuration, Double estimatedPrice, Long vehicleTypeLuxury, Long vehicleTypeId) {
+        this.startlocation = startlocation;
+        this.dropOffOne = dropOffOne;
+        this.dropOffTwo = dropOffTwo;
+
+        this.vehicleTypeId = vehicleTypeId;
+        this.estimatedPrice = estimatedPrice;
+        this.estimatedDistance = estimatedDistance;
+        this.vehicleTypeLuxury = vehicleTypeLuxury;
+        this.estimatedDuration = estimatedDuration;
+    }
+
+    public StartLocation getStartlocation() {
+        return startlocation;
+    }
+
+    public void setStartlocation(StartLocation startlocation) {
+        this.startlocation = startlocation;
+    }
+
+    public DropOffOne getDropOffOne() {
+        return dropOffOne;
+    }
+
+    public void setDropOffOne(DropOffOne dropOffOne) {
+        this.dropOffOne = dropOffOne;
+    }
+
+    public DropOffTwo getDropOffTwo() {
+        return dropOffTwo;
+    }
+
+    public void setDropOffTwo(DropOffTwo dropOffTwo) {
+        this.dropOffTwo = dropOffTwo;
+    }
 
     public Long getVehicleTypeId() {
         return vehicleTypeId;
@@ -63,13 +108,5 @@ public class Result {
 
     public void setEstimatedDuration(Long estimatedDuration) {
         this.estimatedDuration = estimatedDuration;
-    }
-
-    public String getCarTypeName() {
-        return carTypeName;
-    }
-
-    public void setCarTypeName(String carTypeName) {
-        this.carTypeName = carTypeName;
     }
 }

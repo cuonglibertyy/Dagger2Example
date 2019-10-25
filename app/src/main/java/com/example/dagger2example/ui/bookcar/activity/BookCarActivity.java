@@ -13,23 +13,31 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson.JSON;
 import com.example.dagger2example.R;
 import com.example.dagger2example.base.BaseActivity;
 import com.example.dagger2example.model.CancelTripEvent;
 import com.example.dagger2example.model.NewTripEvent;
+import com.example.dagger2example.model.body.DropOffOne;
+import com.example.dagger2example.model.body.DropOffTwo;
+import com.example.dagger2example.model.body.LocationBody;
+import com.example.dagger2example.model.body.StartLocation;
 import com.example.dagger2example.model.error.Error;
+import com.example.dagger2example.model.geocode.Geocode;
 import com.example.dagger2example.model.login.Results;
 import com.example.dagger2example.model.typebike.Result;
 import com.example.dagger2example.ui.bookcar.adapter.TypeBikeAdapter;
 import com.example.dagger2example.ui.bookcar.contract.BookCarContract;
+import com.example.dagger2example.listenner.Listenner;
 import com.example.dagger2example.ui.bookcar.presenter.BookCarPresenter;
 import com.example.dagger2example.widget.LoadingDialog;
 import com.google.android.gms.common.api.ApiException;
@@ -64,18 +72,13 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
-import com.novoda.merlin.Bindable;
-import com.novoda.merlin.Connectable;
-import com.novoda.merlin.Disconnectable;
 import com.novoda.merlin.Merlin;
-import com.novoda.merlin.NetworkStatus;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -83,7 +86,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
 
-public class BookCarActivity extends BaseActivity implements Connectable, Disconnectable, Bindable, BookCarContract.View, OnMapReadyCallback {
+public class BookCarActivity extends BaseActivity implements  BookCarContract.View, OnMapReadyCallback, Listenner {
 
 
     @Inject
@@ -103,24 +106,42 @@ RecyclerView recyclerView_typeBike;
     @BindView(R.id.btn_direction)
     Button btn_direction;
     @BindView(R.id.viewTypeBike)
-    LinearLayout viewTypeBike;
+    ConstraintLayout viewTypeBike;
+    @BindView(R.id.tv_distance)
+    TextView tv_distance;
+    @BindView(R.id.tv_duration)
+    TextView tv_duration;
+    @BindView(R.id.tv_price)
+    TextView tv_price;
+
+    private String nameMylocation;
+
     private Location mLastKnowLocation;
     private LocationCallback locationCallback;
     private TypeBikeAdapter typeBikeAdapter;
     private View mapView;
-    public String latstart;
-    public String longstart;
-    public String latdropoffone;
-    public String longdropoffone;
+    public double latstart;
+    public double longstart;
+    public double latdropoffone;
+    public double longdropoffone;
     public double latdropofftwo = 0.0;
     public double longdropofftwo = 0.0;
-    public String estimatedDistance;
-    public String estimatedDuration;
-    public String estimatedPrice;
-    public String vehicleTypeId;
-    public String vehicleTypeLuxury;
-//    BottomSheetBehavior sheetBehavior;
-List<com.example.dagger2example.model.typebike.Result> resultList = new ArrayList<>();
+    public Long estimatedDistance  ;
+    public Long estimatedDuration ;
+    public Double estimatedPrice;
+    public Long vehicleTypeId ;
+    public Long vehicleTypeLuxury;
+
+    List<com.example.dagger2example.model.typebike.Result> resultList = new ArrayList<>();
+    private StartLocation startlocation;
+    private DropOffOne dropOffOne;
+    private DropOffTwo dropOffTwo;
+    String jsonString;
+    List<LocationBody> locationBodyList = new ArrayList<>();
+
+
+
+
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, BookCarActivity.class));
@@ -140,18 +161,7 @@ List<com.example.dagger2example.model.typebike.Result> resultList = new ArrayLis
 
     @Override
     protected void configViews() {
-//        addDisposable(RxView.clicks(btn_direction)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(
-//                        avoid -> {
-//                            showProgress(true);
-//                            presenter.PostBookBike(latstart,longstart,latdropoffone,longdropoffone);
-//                        },error ->{
-//                            showProgress(false);
-//                            showError();
-//                            Log.d("sadasds", "configViews: "+error);
-//                        }));
+
     }
 
     @Override
@@ -171,8 +181,24 @@ List<com.example.dagger2example.model.typebike.Result> resultList = new ArrayLis
         btn_direction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.PostBookBike(latstart,longstart,latdropoffone,longdropoffone,String.valueOf(latdropofftwo),String.valueOf(longdropofftwo));
-                Log.d("ấdasads", "latlng: "+latstart+longstart+latdropoffone+longdropoffone+latdropofftwo+longdropofftwo);
+
+                if (locationBodyList.size() > 1){
+                    startlocation = new StartLocation(locationBodyList.get(0).getStartlocation().getLatitude(),
+                            locationBodyList.get(0).getStartlocation().getLongitude());
+
+                    dropOffOne = new DropOffOne(locationBodyList.get(1).getDropOffOne().getLatitude(),
+                            locationBodyList.get(1).getDropOffOne().getLongitude());
+
+                }
+                if (locationBodyList.size() > 2){
+                    dropOffTwo = new DropOffTwo(locationBodyList.get(2).getDropOffTwo().getLatitude(),
+                            locationBodyList.get(2).getDropOffTwo().getLongitude());
+                }
+
+                LocationBody locationBody = new LocationBody(startlocation,dropOffOne,dropOffTwo,estimatedDistance,estimatedDuration,estimatedPrice,vehicleTypeLuxury,vehicleTypeId);
+               String jsonString = JSON.toJSONString(locationBody);
+                presenter.PostBookBike(jsonString);
+                Log.d("sadasdasdsa", "json: "+jsonString);
             }
         });
 
@@ -203,12 +229,12 @@ List<com.example.dagger2example.model.typebike.Result> resultList = new ArrayLis
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onCancelTripNotificationEvent(CancelTripEvent cancelTripEvent) {
         String tripCode = cancelTripEvent.getTripCode();
-//        MainActivity.startActivity(this);
+        BookCarActivity.startActivity(this);
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNewTripNotification(NewTripEvent newTripEvent) {
         String newTrip = newTripEvent.getTripId();
-//        MainActivity.startActivity(this);
+        BookCarActivity.startActivity(this);
     }
 
     private void materialsearchbar() {
@@ -228,14 +254,18 @@ List<com.example.dagger2example.model.typebike.Result> resultList = new ArrayLis
             }
 
 
+            @SuppressLint("MissingPermission")
             @Override
             public void onButtonClicked(int buttonCode) {
                 if (buttonCode == MaterialSearchBar.BUTTON_NAVIGATION) {
 
                 } else if (buttonCode == MaterialSearchBar.BUTTON_BACK) {
                     materialSearchBar.disableSearch();
-//                    viewTypeBike.setVisibility(View.GONE);
-//                    sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                    viewTypeBike.setVisibility(View.GONE);
+                    getDeviceLocation();
+                    mMap.clear();
+                    return;
+
 
                 }
             }
@@ -243,7 +273,7 @@ List<com.example.dagger2example.model.typebike.Result> resultList = new ArrayLis
         materialSearchBar.addTextChangeListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                    materialSearchBar.setText(nameMylocation);
             }
 
             @Override
@@ -319,16 +349,22 @@ List<com.example.dagger2example.model.typebike.Result> resultList = new ArrayLis
                             mMap.clear();
                             Place place = fetchPlaceResponse.getPlace();
                             LatLng latLngofPlace = place.getLatLng();
-                            latdropoffone = String.valueOf(latLngofPlace.latitude);
-                            longdropoffone = String.valueOf(latLngofPlace.longitude);
+                            String place_ID = place.getId();
+                            Log.d("dsasda", "onSuccess: "+place_ID);
+                            latdropoffone = latLngofPlace.latitude;
+                            longdropoffone = latLngofPlace.longitude;
+
 
                             Log.d("ádadadadsda", "lat: "+latdropoffone+"long"+longdropoffone);
                             mMap.addMarker(new MarkerOptions().position(latLngofPlace).title(place.getName()));
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngofPlace, 15));
 //                            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                             if (latLngofPlace != null) {
-                                presenter.postTypeBike(latstart,longstart,latdropoffone,longdropoffone,String.valueOf(latdropofftwo),String.valueOf(longdropofftwo));
-                                viewTypeBike.setVisibility(View.VISIBLE);
+
+                                presenter.postTypeBike(String.valueOf(latstart),String.valueOf(longstart),String.valueOf(latdropoffone),String.valueOf(longdropoffone),String.valueOf(latdropofftwo),String.valueOf(longdropofftwo));
+                                startlocation = new StartLocation(mLastKnowLocation.getLatitude(),mLastKnowLocation.getLongitude());
+                                dropOffOne = new DropOffOne(latdropoffone,longdropoffone);
+                                dropOffTwo = new DropOffTwo(0.0,0.0);
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -364,20 +400,6 @@ List<com.example.dagger2example.model.typebike.Result> resultList = new ArrayLis
     }
 
 
-    @Override
-    public void onBind(NetworkStatus networkStatus) {
-
-    }
-
-    @Override
-    public void onConnect() {
-
-    }
-
-    @Override
-    public void onDisconnect() {
-
-    }
 
     @Override
     public void showProgress(boolean show) {
@@ -401,9 +423,10 @@ List<com.example.dagger2example.model.typebike.Result> resultList = new ArrayLis
 
     @Override
     public void showSuccessful() {
-//        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
         showProgress(false);
         Toasty.success(context,"Tìm tài xế thành công",Toasty.LENGTH_SHORT).show();
+        viewTypeBike.setVisibility(View.GONE);
     }
 
     @Override
@@ -416,7 +439,7 @@ List<com.example.dagger2example.model.typebike.Result> resultList = new ArrayLis
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         if (mapView != null && mapView.findViewById(Integer.parseInt("1")) != null) {
@@ -467,9 +490,11 @@ List<com.example.dagger2example.model.typebike.Result> resultList = new ArrayLis
                             mLastKnowLocation = task.getResult();
                             if (mLastKnowLocation != null) {
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnowLocation.getLatitude(), mLastKnowLocation.getLongitude()), 14));
-                            latstart = String.valueOf(mLastKnowLocation.getLatitude());
-                               longstart = String.valueOf(mLastKnowLocation.getLongitude());
-                                Log.d("sadasdas2", "latlng: "+latstart+longstart);
+                            latstart =mLastKnowLocation.getLatitude();
+                               longstart = mLastKnowLocation.getLongitude();
+                               String latlng = String.valueOf(latstart)+","+String.valueOf(longstart);
+                               presenter.getMyLocationName(latlng);
+                                Log.d("sadasdas2", "latlng: "+latlng);
                             } else {
                                 final LocationRequest locationRequest = LocationRequest.create();
                                 locationRequest.setInterval(10000);
@@ -502,14 +527,12 @@ List<com.example.dagger2example.model.typebike.Result> resultList = new ArrayLis
 
     @Override
     public void getResult(Error error) {
-//        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         if (error.getResults().getMessage()!= null){
             showProgress(false);
             Toasty.warning(context,error.getResults().getMessage(),Toasty.LENGTH_SHORT).show();
             return;
         }
         else {
-
             showProgress(false);
             Log.d("sadasdadasasdádas", "error: "+error);
             showError();
@@ -519,11 +542,54 @@ List<com.example.dagger2example.model.typebike.Result> resultList = new ArrayLis
 
     @Override
     public void getTypeBike(List<Result> results) {
+        if (results!=null){
+            viewTypeBike.setVisibility(View.VISIBLE);
+            resultList = results;
+            typeBikeAdapter = new TypeBikeAdapter(this,resultList,this);
+            recyclerView_typeBike.setAdapter(typeBikeAdapter);
 
-        resultList.addAll(results);
-        typeBikeAdapter = new TypeBikeAdapter(this,resultList);
-        recyclerView_typeBike.setAdapter(typeBikeAdapter);
+            loadEstimatedPrice(results.get(0).getEstimatedPrice(),tv_price);
+            loadEstimatedDuration(results.get(0).getEstimatedDuration(),tv_duration);
+            loadEstimatedDistance(results.get(0).getEstimatedDistance(),tv_distance);
+
+            estimatedDistance = results.get(0).getEstimatedDistance();
+            estimatedDuration = results.get(0).getEstimatedDuration();
+            estimatedPrice = results.get(0).getEstimatedPrice();
+            vehicleTypeId = results.get(0).getVehicleTypeId();
+            vehicleTypeLuxury = results.get(0).getVehicleTypeLuxury();
+        }else {
+            showError();
+        }
+
+
+
+
+    }
+
+    @Override
+    public void showName(String nameMylocation) {
+        if (nameMylocation !=null){
+            nameMylocation = nameMylocation;
+            Log.d("sdassdaadssadasdsadas", "showName: "+nameMylocation);
+
+        }
+
     }
 
 
+    @Override
+    public void onClickListener(Result result) {
+            loadEstimatedDistance(result.getEstimatedDistance(),tv_distance);
+            loadEstimatedDuration(result.getEstimatedDuration(),tv_duration);
+            loadEstimatedPrice(result.getEstimatedPrice(),tv_price);
+
+
+            estimatedDistance = result.getEstimatedDistance();
+            estimatedDuration = result.getEstimatedDuration();
+            estimatedPrice = result.getEstimatedPrice();
+            vehicleTypeId = result.getVehicleTypeId();
+            vehicleTypeLuxury = result.getVehicleTypeLuxury();
+
+
+    }
 }

@@ -7,9 +7,11 @@ import android.content.Context;
 import com.example.dagger2example.constans.Constans;
 import com.example.dagger2example.dagger.qualifiers.ApplicationContext;
 import com.example.dagger2example.dagger.qualifiers.EtranUrl;
+import com.example.dagger2example.dagger.qualifiers.GoogleUrl;
 import com.example.dagger2example.dagger.qualifiers.PreferenceInfo;
 import com.example.dagger2example.data.DataManager;
 import com.example.dagger2example.data.remote.EtranServiceUrl;
+import com.example.dagger2example.data.remote.GoogleService;
 import com.example.dagger2example.data.sharepreferences.AppPreferenHelper;
 import com.example.dagger2example.data.sharepreferences.PreferenHelper;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -87,8 +89,14 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    DataManager provideDataManager(EtranServiceUrl etranServiceUrl,PreferenHelper preferenHelper) {
-        return new DataManager(etranServiceUrl, preferenHelper);
+    DataManager provideDataManager(EtranServiceUrl etranServiceUrl, PreferenHelper preferenHelper, GoogleService googleService) {
+        return new DataManager(etranServiceUrl, preferenHelper,googleService);
+    }
+
+    @Provides
+    @Singleton
+    GoogleService provideGetGoogleService(@GoogleUrl Retrofit retrofit){
+        return retrofit.create(GoogleService.class);
     }
 
     @Provides
@@ -108,6 +116,13 @@ public class ApplicationModule {
     @EtranUrl
     Retrofit provideGet42Retrofit(Retrofit.Builder builder, OkHttpClient client) {
         return createRetrofit(builder, client, Constans.ETRAN_URL);
+    }
+
+    @Provides
+    @Singleton
+    @GoogleUrl
+    Retrofit provieGoogleRetrofit(Retrofit.Builder builder,OkHttpClient client){
+        return createRetrofit(builder,client,Constans.GOOGLE_SERVICE_URL);
     }
 
 

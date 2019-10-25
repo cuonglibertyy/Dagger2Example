@@ -165,12 +165,44 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         }
         tvCreateTime.setText(getString(R.string.history_label_create_time, DateUtils.convertMiliToTime(createTimed)));
     }
-    protected void loadEstimatedPrice(double estimatedPrice, TextView tvPrice) {
+    protected void loadEstimatedPrice(Double estimatedPrice, TextView tvPrice) {
         if (tvPrice == null) {
             return;
         }
         String estimatedPriceFormatted = FormatUtils.convertEstimatedPrice(estimatedPrice);
         tvPrice.setText(getString(R.string.common_label_estimated_price, estimatedPriceFormatted));
+    }
+    protected void loadEstimatedDistance(long estimatedDistance,TextView tv_distance){
+        if (tv_distance == null){
+            return;
+        }
+        if (estimatedDistance<1000){
+            String estimatedDistanceFormattedMetter = FormatUtils.convertEstimatedDistance(estimatedDistance);
+            tv_distance.setText(getString(R.string.common_label_estimated_distance_metter,estimatedDistanceFormattedMetter));
+        }else{
+            Long estimateDistanceKilometter = estimatedDistance/1000;
+            String estimateKilomet = FormatUtils.convertEstimatedDistance(estimateDistanceKilometter);
+            tv_distance.setText(getString(R.string.common_label_estimated_distance_kilo_metter,estimateKilomet));
+        }
+
+    }
+    protected void loadEstimatedDuration(long estimatedDuration,TextView tv_duration){
+        if (tv_duration == null){
+            return;
+        }
+        if (estimatedDuration>60){
+            Long durationminute = estimatedDuration/60;
+            String estimatedDurationFormatted = FormatUtils.convertEstimatedDuration(durationminute);
+            tv_duration.setText(getString(R.string.common_label_estimated_duration_minute,estimatedDurationFormatted));
+        }else if (estimatedDuration>3600){
+            Long durationhour = estimatedDuration/3600;
+            String estimateHour = FormatUtils.convertEstimatedDuration(durationhour);
+            tv_duration.setText(getString(R.string.common_label_estimated_duration_hour,estimateHour));
+        }else if (estimatedDuration<60){
+            String estimateSecond = FormatUtils.convertEstimatedDuration(estimatedDuration);
+            tv_duration.setText(getString(R.string.common_label_estimated_duration_second,estimateSecond));
+        }
+
     }
     protected void loadTripStatus(int tripStatus, TextView tvTripStatus) {
         if (tvTripStatus == null) {

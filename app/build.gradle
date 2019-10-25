@@ -119,5 +119,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     implementation 'com.android.support:multidex:1.0.3'
 
-
+    // fastjson
+    implementation 'com.alibaba:fastjson:1.2.61'
+    implementation 'com.alibaba:fastjson:1.1.71.android'
 }
