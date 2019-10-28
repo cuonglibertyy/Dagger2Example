@@ -7,60 +7,38 @@ import com.google.gson.annotations.SerializedName;
 
 public class Geocode {
 
-    @SerializedName("address_components")
+    @SerializedName("plus_code")
     @Expose
-    private List<AddressComponent> addressComponents = null;
-    @SerializedName("formatted_address")
+    private PlusCode plusCode;
+    @SerializedName("results")
     @Expose
-    private String formattedAddress;
-    @SerializedName("geometry")
+    private List<Result> results = null;
+    @SerializedName("status")
     @Expose
-    private Geometry geometry;
-    @SerializedName("place_id")
-    @Expose
-    private String placeId;
-    @SerializedName("types")
-    @Expose
-    private List<String> types = null;
+    private String status;
 
-    public List<AddressComponent> getAddressComponents() {
-        return addressComponents;
+    public PlusCode getPlusCode() {
+        return plusCode;
     }
 
-    public void setAddressComponents(List<AddressComponent> addressComponents) {
-        this.addressComponents = addressComponents;
+    public void setPlusCode(PlusCode plusCode) {
+        this.plusCode = plusCode;
     }
 
-    public String getFormattedAddress() {
-        return formattedAddress;
+    public List<Result> getResults() {
+        return results;
     }
 
-    public void setFormattedAddress(String formattedAddress) {
-        this.formattedAddress = formattedAddress;
+    public void setResults(List<Result> results) {
+        this.results = results;
     }
 
-    public Geometry getGeometry() {
-        return geometry;
+    public String getStatus() {
+        return status;
     }
 
-    public void setGeometry(Geometry geometry) {
-        this.geometry = geometry;
-    }
-
-    public String getPlaceId() {
-        return placeId;
-    }
-
-    public void setPlaceId(String placeId) {
-        this.placeId = placeId;
-    }
-
-    public List<String> getTypes() {
-        return types;
-    }
-
-    public void setTypes(List<String> types) {
-        this.types = types;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }

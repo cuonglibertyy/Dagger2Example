@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +34,7 @@ import com.example.dagger2example.model.body.DropOffTwo;
 import com.example.dagger2example.model.body.LocationBody;
 import com.example.dagger2example.model.body.StartLocation;
 import com.example.dagger2example.model.error.Error;
-import com.example.dagger2example.model.geocode.Geocode;
+import com.example.dagger2example.model.historydetail.User;
 import com.example.dagger2example.model.login.Results;
 import com.example.dagger2example.model.typebike.Result;
 import com.example.dagger2example.ui.bookcar.adapter.TypeBikeAdapter;
@@ -74,6 +76,7 @@ import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.novoda.merlin.Merlin;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -106,13 +109,15 @@ RecyclerView recyclerView_typeBike;
     @BindView(R.id.btn_direction)
     Button btn_direction;
     @BindView(R.id.viewTypeBike)
-    ConstraintLayout viewTypeBike;
+    LinearLayout viewTypeBike;
     @BindView(R.id.tv_distance)
     TextView tv_distance;
     @BindView(R.id.tv_duration)
     TextView tv_duration;
     @BindView(R.id.tv_price)
     TextView tv_price;
+    @BindView(R.id.edt_mylocation)
+    TextView edt_mylocation;
 
     private String nameMylocation;
 
@@ -140,8 +145,17 @@ RecyclerView recyclerView_typeBike;
     List<LocationBody> locationBodyList = new ArrayList<>();
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, BookCarActivity.class));
@@ -229,12 +243,14 @@ RecyclerView recyclerView_typeBike;
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onCancelTripNotificationEvent(CancelTripEvent cancelTripEvent) {
         String tripCode = cancelTripEvent.getTripCode();
-        BookCarActivity.startActivity(this);
+
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNewTripNotification(NewTripEvent newTripEvent) {
         String newTrip = newTripEvent.getTripId();
-        BookCarActivity.startActivity(this);
+        presenter.getLastStatus();
+        Toast.makeText(context, "tripID"+newTrip, Toast.LENGTH_SHORT).show();
+
     }
 
     private void materialsearchbar() {
@@ -273,7 +289,7 @@ RecyclerView recyclerView_typeBike;
         materialSearchBar.addTextChangeListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    materialSearchBar.setText(nameMylocation);
+
             }
 
             @Override
@@ -281,7 +297,7 @@ RecyclerView recyclerView_typeBike;
 
 
                 FindAutocompletePredictionsRequest predictionsRequest = FindAutocompletePredictionsRequest.builder()
-                        .setCountry("vn")
+                        .setCountry("CN")
                         .setTypeFilter(TypeFilter.ADDRESS)
                         .setSessionToken(token)
                         .setQuery(s.toString())
@@ -439,7 +455,7 @@ RecyclerView recyclerView_typeBike;
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         if (mapView != null && mapView.findViewById(Integer.parseInt("1")) != null) {
@@ -567,13 +583,20 @@ RecyclerView recyclerView_typeBike;
     }
 
     @Override
-    public void showName(String nameMylocation) {
-        if (nameMylocation !=null){
-            nameMylocation = nameMylocation;
+    public void showName(List<com.example.dagger2example.model.geocode.Result> result) {
+        if (result !=null){
+            nameMylocation = result.get(0).getFormattedAddress();
+            edt_mylocation.setText(nameMylocation);
             Log.d("sdassdaadssadasdsadas", "showName: "+nameMylocation);
 
         }
 
+    }
+
+    @Override
+    public void showInformation(com.example.dagger2example.model.historydetail.Results results) {
+
+        Toast.makeText(context, "Thông tin tài xế" +results.getUser().getFullName()+"Tên xe"+results.getUser().getLicence(), Toast.LENGTH_SHORT).show();
     }
 
 

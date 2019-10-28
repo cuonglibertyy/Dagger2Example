@@ -65,12 +65,7 @@ public class SplashPresenter extends RxPresenter<SplashContract.View>
 
     @Override
     public void CheckLoggin() {
-//        UserInfo userInfo = dataManager.getUserInfo();
-//        if (userInfo == null){
-//            mView.showLogin();
-//        }else {
-//            mView.showMain();
-//        }
+       mView.showProgress(true);
         Token token = dataManager.getToken();
         if (token == null) {
             mView.showLogin();
@@ -89,7 +84,7 @@ public class SplashPresenter extends RxPresenter<SplashContract.View>
                 .subscribe(
                         (beans) -> {
 //                            Log.d("dsasadsad", "CheckLoggin: "+beans);
-                            mView.finishGetStatusUser(beans);
+                           mView.finishGetStatusUser(beans);
                         },
                         (error) -> {
                             Logger.w("GET LAST STATUS ERROR: %s", error);

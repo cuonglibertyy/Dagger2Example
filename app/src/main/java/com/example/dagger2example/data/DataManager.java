@@ -41,6 +41,11 @@ public class DataManager implements EtranServiceUrl,GoogleService, PreferenHelpe
     }
 
     @Override
+    public Observable<HistoryDetail> getLastStatus(String tokenKey) {
+        return etranServiceUrl.getLastStatus(tokenKey);
+    }
+
+    @Override
     public Observable<History> getHistory(String tokenKey, RequestBody body) {
         return etranServiceUrl.getHistory(tokenKey,body);
     }

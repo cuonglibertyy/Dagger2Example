@@ -22,6 +22,9 @@ public interface EtranServiceUrl {
     @POST("user/getlaststatus")
     Observable<EtrantJsonResult> getLastStatusDriver(@Header(Constans.VALUE_NAME_TOKEN) String tokenKey);
 
+    @POST("user/getlaststatus")
+    Observable<HistoryDetail> getLastStatus(@Header(Constans.VALUE_NAME_TOKEN) String tokenKey);
+
 
     @POST("user/getHistoryTrip/v2")
     Observable<History> getHistory(@Header(Constans.VALUE_NAME_TOKEN) String tokenKey,

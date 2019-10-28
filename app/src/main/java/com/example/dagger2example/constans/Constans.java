@@ -8,6 +8,12 @@ public class Constans {
     public static final String KEY_FIREBASE_SERVICE_ID ="objectId" ;
     public static final String KEY_NOTIFICATION_CODE ="notificationCode" ;
     public static final String KEY_NOTIFICATION_CONTENT ="notificationContent" ;
+    public static final String COMMON_TRIP_CODE_KO_TIM_THAY_CHUYEN_NOTIFICATION = "210";
+    public static final String COMMON_TRIP_CODE_NHAN_CHUYEN_NOTIFICATION = "212";
+    public static final String COMMON_TRIP_CODE_HUY_CHUYEN_NOTIFICATION = "214";
+    public static final String COMMON_TRIP_CODE_BAT_DAU_CHUYEN_NOTIFICATION = "215";
+    public static final String COMMON_TRIP_CODE_KET_THUC_CHUYEN_NOTIFICATION = "216";
+    public static final String COMMON_TRIP_CODE_THANH_TOAN_THANH_CONG_NOTIFICATION = "217";
     public static String ETRAN_URL = "https://ego-local-252402.appspot.com/";
         public static String GOOGLE_SERVICE_URL = "https://maps.googleapis.com/maps/api/";
         public static String KEY_GOOGLE_DIRECTION = "AIzaSyA9rTnxqBiap6yioOqcGREcyrcZno2ShGU";

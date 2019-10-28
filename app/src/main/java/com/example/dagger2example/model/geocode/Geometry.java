@@ -6,9 +6,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Geometry {
 
-    @SerializedName("bounds")
-    @Expose
-    private Bounds bounds;
     @SerializedName("location")
     @Expose
     private Location location;
@@ -18,14 +15,9 @@ public class Geometry {
     @SerializedName("viewport")
     @Expose
     private Viewport viewport;
-
-    public Bounds getBounds() {
-        return bounds;
-    }
-
-    public void setBounds(Bounds bounds) {
-        this.bounds = bounds;
-    }
+    @SerializedName("bounds")
+    @Expose
+    private Bounds bounds;
 
     public Location getLocation() {
         return location;
@@ -49,6 +41,14 @@ public class Geometry {
 
     public void setViewport(Viewport viewport) {
         this.viewport = viewport;
+    }
+
+    public Bounds getBounds() {
+        return bounds;
+    }
+
+    public void setBounds(Bounds bounds) {
+        this.bounds = bounds;
     }
 
 }

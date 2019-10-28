@@ -156,7 +156,6 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     @Override
     public void finishCheckLogin(boolean isLoggin) {
         if (isLoggin) {
-            showProgress(true);
             splashPresenter.CheckLoggin();
         }
     }

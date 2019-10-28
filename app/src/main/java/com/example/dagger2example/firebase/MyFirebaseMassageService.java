@@ -62,16 +62,21 @@ public class MyFirebaseMassageService extends FirebaseMessagingService {
                 return;
             }
             if (StringUtils.isEmpty(code)){
-
+                return;
             }
             if (StringUtils.isEmpty(content)){
-
+                return;
             }
-            if (code.equals("211")){
+
+            if (code.equals(Constans.COMMON_TRIP_CODE_KO_TIM_THAY_CHUYEN_NOTIFICATION)) {
+            return;
+            }
+
+            else if (code.equals(Constans.COMMON_TRIP_CODE_NHAN_CHUYEN_NOTIFICATION)){
                 EventBus.getDefault().post(new NewTripEvent(tripId));
                 return;
             }
-            else if (code.equals("213")){
+            else if (code.equals(Constans.COMMON_TRIP_CODE_HUY_CHUYEN_NOTIFICATION)){
                 EventBus.getDefault().post(new CancelTripEvent(tripId));
             }
             getdata(content);

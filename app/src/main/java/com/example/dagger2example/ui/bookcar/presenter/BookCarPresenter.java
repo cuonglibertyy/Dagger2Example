@@ -2,6 +2,7 @@ package com.example.dagger2example.ui.bookcar.presenter;
 
 import android.util.Log;
 
+import com.example.dagger2example.R;
 import com.example.dagger2example.base.RxPresenter;
 import com.example.dagger2example.constans.Constans;
 import com.example.dagger2example.data.DataManager;
@@ -11,6 +12,8 @@ import com.example.dagger2example.model.typebike.Result;
 import com.example.dagger2example.ui.bookcar.contract.BookCarContract;
 import com.example.dagger2example.untils.ErrorHandle;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -183,19 +186,52 @@ public class BookCarPresenter extends RxPresenter<BookCarContract.View>
             return;
         }
 
+
         Disposable disposable = dataManager.getChooseLocation(latlng,Constans.KEY_GOOGLE_DIRECTION)
-                .flatMap(geocode -> Observable.just(geocode.getFormattedAddress()))
+                .flatMap(geocode -> Observable.just(geocode.getResults()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe((result ->{
                     mView.showName(result);
                     Log.d("sadaddasasd", "getMyLocationName: "+result);
                 }),(error ->{
-                    mView.showError();
                     Log.d("sdsadasdsadadssdaasdasd", "getMyLocationName: "+error);
+                    mView.showError(R.string.error);
                 }));
         addSubscribe(disposable);
 
 
+    }
+
+    @Override
+    public void getLastStatus() {
+
+        Token token = dataManager.getToken();
+        if (token == null) {
+            Log.d("ádsaasđấ", "lỗi token: ");
+            mView.showError();
+            return;
+        }
+
+        String tokenKey = token.getTokenKey();
+        if (tokenKey == null & tokenKey.length() == 0) {
+            Log.d("ádsaasđấ", "lỗi tokenkey: ");
+            mView.showError();
+            return;
+        }
+
+        Disposable disposable = dataManager.getLastStatus(tokenKey)
+                .flatMap(historyDetail -> Observable.just(historyDetail.getResults()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe((result ->{
+                    mView.showInformation(result);
+                }),(error ->{
+                    Log.d("sadasdsasda", "getLastStatus: "+error);
+                    mView.showError(R.string.error);
+
+                }));
+
+        addSubscribe(disposable);
     }
 }
