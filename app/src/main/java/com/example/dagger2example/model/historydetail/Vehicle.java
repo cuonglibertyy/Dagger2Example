@@ -1,11 +1,14 @@
 
 package com.example.dagger2example.model.historydetail;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Vehicle {
+public class Vehicle implements Parcelable {
 
     @SerializedName("vehicleId")
     @Expose
@@ -82,6 +85,81 @@ public class Vehicle {
     @SerializedName("vehicleTypeName")
     @Expose
     private String vehicleTypeName;
+
+    protected Vehicle(Parcel in) {
+        vehicleId = in.readString();
+        numberPlate = in.readString();
+        vehicleName = in.readString();
+        transportCompanyId = in.readString();
+        transportCompanyName = in.readString();
+        origin = in.readString();
+        manufacturerId = in.readString();
+        manufacturerName = in.readString();
+        carType = in.readString();
+        if (in.readByte() == 0) {
+            vehicleStatus = null;
+        } else {
+            vehicleStatus = in.readLong();
+        }
+        userId = in.readString();
+        productedYear = in.readString();
+        if (in.readByte() == 0) {
+            numberOfSeats = null;
+        } else {
+            numberOfSeats = in.readInt();
+        }
+        driverId = in.readString();
+        if (in.readByte() == 0) {
+            longitude = null;
+        } else {
+            longitude = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            latitude = null;
+        } else {
+            latitude = in.readDouble();
+        }
+        vehicleTypeId = in.readString();
+        driverName = in.readString();
+        if (in.readByte() == 0) {
+            vehicleTypeLuxury = null;
+        } else {
+            vehicleTypeLuxury = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            registerDate = null;
+        } else {
+            registerDate = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            registerExpiryDate = null;
+        } else {
+            registerExpiryDate = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            createdDate = null;
+        } else {
+            createdDate = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            updatedDate = null;
+        } else {
+            updatedDate = in.readLong();
+        }
+        vehicleTypeName = in.readString();
+    }
+
+    public static final Creator<Vehicle> CREATOR = new Creator<Vehicle>() {
+        @Override
+        public Vehicle createFromParcel(Parcel in) {
+            return new Vehicle(in);
+        }
+
+        @Override
+        public Vehicle[] newArray(int size) {
+            return new Vehicle[size];
+        }
+    };
 
     public String getVehicleId() {
         return vehicleId;
@@ -281,5 +359,83 @@ public class Vehicle {
 
     public void setVehicleTypeName(String vehicleTypeName) {
         this.vehicleTypeName = vehicleTypeName;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(vehicleId);
+        dest.writeString(numberPlate);
+        dest.writeString(vehicleName);
+        dest.writeString(transportCompanyId);
+        dest.writeString(transportCompanyName);
+        dest.writeString(origin);
+        dest.writeString(manufacturerId);
+        dest.writeString(manufacturerName);
+        dest.writeString(carType);
+        if (vehicleStatus == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(vehicleStatus);
+        }
+        dest.writeString(userId);
+        dest.writeString(productedYear);
+        if (numberOfSeats == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(numberOfSeats);
+        }
+        dest.writeString(driverId);
+        if (longitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(longitude);
+        }
+        if (latitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(latitude);
+        }
+        dest.writeString(vehicleTypeId);
+        dest.writeString(driverName);
+        if (vehicleTypeLuxury == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(vehicleTypeLuxury);
+        }
+        if (registerDate == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(registerDate);
+        }
+        if (registerExpiryDate == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(registerExpiryDate);
+        }
+        if (createdDate == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(createdDate);
+        }
+        if (updatedDate == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(updatedDate);
+        }
+        dest.writeString(vehicleTypeName);
     }
 }

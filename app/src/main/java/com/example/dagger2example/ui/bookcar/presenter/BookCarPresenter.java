@@ -44,6 +44,7 @@ public class BookCarPresenter extends RxPresenter<BookCarContract.View>
 
     @Override
     public void postTypeBike(String latitudemylocation, String longitudemylocation, String latiudedroffone, String longitudedroffone, String latdropofftwo, String longdropofftwo) {
+        mView.showProgress(true);
         Token token = dataManager.getToken();
         if (token == null) {
             Log.d("ádsaasđấ", "lỗi token: ");
@@ -156,8 +157,7 @@ public class BookCarPresenter extends RxPresenter<BookCarContract.View>
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((result ->{
-                    mView.showSuccessful();
-
+                    mView.showProgress(false);
                     Log.d("wqewa", "result: "+result);
                 }),(error ->{
                 mView.getResult(ErrorHandle.errorParser(error));
@@ -232,6 +232,35 @@ public class BookCarPresenter extends RxPresenter<BookCarContract.View>
 
                 }));
 
+        addSubscribe(disposable);
+    }
+
+    @Override
+    public void getLocationDriver() {
+
+        Token token = dataManager.getToken();
+        if (token == null) {
+            Log.d("ádsaasđấ", "lỗi token: ");
+            mView.showError();
+            return;
+        }
+
+        String tokenKey = token.getTokenKey();
+        if (tokenKey == null & tokenKey.length() == 0) {
+            Log.d("ádsaasđấ", "lỗi tokenkey: ");
+            mView.showError();
+            return;
+        }
+
+        Disposable disposable = dataManager.getLastStatus(tokenKey)
+                .flatMap(historyDetail -> Observable.just(historyDetail.getResults()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
+                .subscribe((results -> {
+                    mView.showLocationDriver(results);
+                }),(error ->{
+                    mView.showError(R.string.error);
+                }));
         addSubscribe(disposable);
     }
 }

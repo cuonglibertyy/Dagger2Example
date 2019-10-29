@@ -122,4 +122,8 @@ dependencies {
     // fastjson
     implementation 'com.alibaba:fastjson:1.2.61'
     implementation 'com.alibaba:fastjson:1.1.71.android'
+
+    // check permission
+    implementation "org.permissionsdispatcher:permissionsdispatcher:4.5.0"
+    annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:4.5.0"
 }

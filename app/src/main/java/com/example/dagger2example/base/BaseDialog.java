@@ -1,5 +1,6 @@
 package com.example.dagger2example.base;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -249,4 +250,6 @@ public abstract class BaseDialog extends RxDialogFragment {
         setCancelable(false);
         getDialog().setCanceledOnTouchOutside(false);
     }
+
+
 }

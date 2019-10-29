@@ -19,6 +19,7 @@ import androidx.core.app.NotificationCompat;
 import com.example.dagger2example.R;
 import com.example.dagger2example.constans.Constans;
 import com.example.dagger2example.model.CancelTripEvent;
+import com.example.dagger2example.model.LocationDriver;
 import com.example.dagger2example.model.NewTripEvent;
 import com.example.dagger2example.ui.main.MainActivity;
 import com.example.dagger2example.untils.StringUtils;
@@ -74,6 +75,7 @@ public class MyFirebaseMassageService extends FirebaseMessagingService {
 
             else if (code.equals(Constans.COMMON_TRIP_CODE_NHAN_CHUYEN_NOTIFICATION)){
                 EventBus.getDefault().post(new NewTripEvent(tripId));
+
                 return;
             }
             else if (code.equals(Constans.COMMON_TRIP_CODE_HUY_CHUYEN_NOTIFICATION)){

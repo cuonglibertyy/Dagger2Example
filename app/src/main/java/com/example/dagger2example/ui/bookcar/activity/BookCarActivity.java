@@ -1,12 +1,16 @@
 package com.example.dagger2example.ui.bookcar.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -27,7 +31,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.fastjson.JSON;
 import com.example.dagger2example.R;
 import com.example.dagger2example.base.BaseActivity;
+import com.example.dagger2example.constans.Constans;
 import com.example.dagger2example.model.CancelTripEvent;
+import com.example.dagger2example.model.LocationDriver;
 import com.example.dagger2example.model.NewTripEvent;
 import com.example.dagger2example.model.body.DropOffOne;
 import com.example.dagger2example.model.body.DropOffTwo;
@@ -40,6 +46,7 @@ import com.example.dagger2example.model.typebike.Result;
 import com.example.dagger2example.ui.bookcar.adapter.TypeBikeAdapter;
 import com.example.dagger2example.ui.bookcar.contract.BookCarContract;
 import com.example.dagger2example.listenner.Listenner;
+import com.example.dagger2example.ui.bookcar.dialog.DialogDriver;
 import com.example.dagger2example.ui.bookcar.presenter.BookCarPresenter;
 import com.example.dagger2example.widget.LoadingDialog;
 import com.google.android.gms.common.api.ApiException;
@@ -52,6 +59,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -74,6 +82,7 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
+import com.novoda.merlin.Logger;
 import com.novoda.merlin.Merlin;
 
 import org.greenrobot.eventbus.EventBus;
@@ -88,10 +97,15 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class BookCarActivity extends BaseActivity implements  BookCarContract.View, OnMapReadyCallback, Listenner {
 
-
+    private static final String EXTRA_RESULTS = "EXTRA_RESULTS";
     @Inject
     BookCarPresenter presenter;
     private GoogleMap mMap;
@@ -99,9 +113,7 @@ public class BookCarActivity extends BaseActivity implements  BookCarContract.Vi
     private PlacesClient placesClient;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private List<AutocompletePrediction> predictionList;
-//    @BindView(R.id.layoutBottomSheet)
-//    LinearLayout layoutBottomSheet;
-    // RecycleView
+
 @BindView(R.id.recyclerView_typeBike)
 RecyclerView recyclerView_typeBike;
     @BindView(R.id.searchBar)
@@ -118,13 +130,14 @@ RecyclerView recyclerView_typeBike;
     TextView tv_price;
     @BindView(R.id.edt_mylocation)
     TextView edt_mylocation;
-
+    private DialogDriver dialogDriver;
     private String nameMylocation;
 
     private Location mLastKnowLocation;
     private LocationCallback locationCallback;
     private TypeBikeAdapter typeBikeAdapter;
     private View mapView;
+    int currentLocationCount = 0;
     public double latstart;
     public double longstart;
     public double latdropoffone;
@@ -149,6 +162,12 @@ RecyclerView recyclerView_typeBike;
     protected void onResume() {
         super.onResume();
         EventBus.getDefault().register(this);
+        if (mLastKnowLocation !=null){
+            LatLng latLng = new LatLng(mLastKnowLocation.getLatitude(), mLastKnowLocation.getLongitude());
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+            mMap.moveCamera(cameraUpdate);
+
+        }
     }
 
     @Override
@@ -159,6 +178,13 @@ RecyclerView recyclerView_typeBike;
 
     public static void startActivity(Context context) {
         context.startActivity(new Intent(context, BookCarActivity.class));
+    }
+    public static void startActivity(Context context, com.example.dagger2example.model.historydetail.Results
+            results) {
+        context.startActivity(new Intent(context, BookCarActivity.class)
+                .putExtra(EXTRA_RESULTS,results));
+
+
     }
 
     @Override
@@ -243,16 +269,24 @@ RecyclerView recyclerView_typeBike;
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onCancelTripNotificationEvent(CancelTripEvent cancelTripEvent) {
         String tripCode = cancelTripEvent.getTripCode();
+        dialogDriver.dismiss();
+        viewTypeBike.setVisibility(View.GONE);
 
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNewTripNotification(NewTripEvent newTripEvent) {
         String newTrip = newTripEvent.getTripId();
         presenter.getLastStatus();
-        Toast.makeText(context, "tripID"+newTrip, Toast.LENGTH_SHORT).show();
 
     }
 
+
+
+    public void loadmap(){
+        if (mMap !=null){
+
+        }
+    }
     private void materialsearchbar() {
 
         final AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
@@ -278,7 +312,7 @@ RecyclerView recyclerView_typeBike;
                 } else if (buttonCode == MaterialSearchBar.BUTTON_BACK) {
                     materialSearchBar.disableSearch();
                     viewTypeBike.setVisibility(View.GONE);
-                    getDeviceLocation();
+                    getMyLocation();
                     mMap.clear();
                     return;
 
@@ -297,7 +331,7 @@ RecyclerView recyclerView_typeBike;
 
 
                 FindAutocompletePredictionsRequest predictionsRequest = FindAutocompletePredictionsRequest.builder()
-                        .setCountry("CN")
+                        .setCountry("vn")
                         .setTypeFilter(TypeFilter.ADDRESS)
                         .setSessionToken(token)
                         .setQuery(s.toString())
@@ -379,6 +413,7 @@ RecyclerView recyclerView_typeBike;
 
                                 presenter.postTypeBike(String.valueOf(latstart),String.valueOf(longstart),String.valueOf(latdropoffone),String.valueOf(longdropoffone),String.valueOf(latdropofftwo),String.valueOf(longdropofftwo));
                                 startlocation = new StartLocation(mLastKnowLocation.getLatitude(),mLastKnowLocation.getLongitude());
+                                Log.d("wqeqwqw", "onSuccess: "+startlocation);
                                 dropOffOne = new DropOffOne(latdropoffone,longdropoffone);
                                 dropOffTwo = new DropOffTwo(0.0,0.0);
                             }
@@ -451,93 +486,123 @@ RecyclerView recyclerView_typeBike;
     }
 
 
-    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.setMyLocationEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        if (mapView != null && mapView.findViewById(Integer.parseInt("1")) != null) {
-            View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-            layoutParams.setMargins(0, 0, 40, 180);
+        loadMap();
+    }
+
+    private void loadMap() {
+        if (mMap !=null){
+          BookCarActivityPermissionsDispatcher.getMyLocationWithPermissionCheck(this);
+          BookCarActivityPermissionsDispatcher.startLocationUpdatesWithPermissionCheck(this);
         }
 
-        LocationRequest locationRequest = LocationRequest.create();
+    }
+
+    // Request để chạy Permissions
+    @SuppressLint("NeedOnRequestPermissionsResult")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        BookCarActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    // khi người dùng từ chối cấp quyền permission LOCATION cho hệ thống
+    @OnPermissionDenied({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    void showDeniedForLocation() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+        intent.setData(uri);
+        startActivityForResult(intent, 101);
+    }
+    // bắt điều khiển khi người dùng từ chối kích hoạt permission
+    @OnNeverAskAgain({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    void showNeverAskForLocation() {
+//        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+//        intent.setData(uri);
+//        startActivityForResult(intent, 101);
+    }
+
+    // NeedsPermission : khi khởi tạo và bắt đầu sự kiện khi ckeck permission song
+    @SuppressWarnings({"MissingPermission"})
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    void getMyLocation() {
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context);
+        mFusedLocationProviderClient.getLastLocation()
+                .addOnSuccessListener(location -> {
+                    if (location != null) {
+                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+                        mMap.moveCamera(cameraUpdate);
+
+                        onLocationChanged(location);
+
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Logger.d("Error trying to get last GPS location: %s", e);
+                    e.printStackTrace();
+                });
+    }
+
+    @SuppressWarnings({"MissingPermission"})
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    void startLocationUpdates() {
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
-        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
-        Task<LocationSettingsResponse> task = settingsClient.checkLocationSettings(builder.build());
 
-        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
-            @Override
-            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                getDeviceLocation();
-            }
-        });
-        task.addOnFailureListener(this, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if (e instanceof ResolvableApiException) {
-                    ResolvableApiException resolvable = (ResolvableApiException) e;
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(locationRequest);
+        LocationSettingsRequest locationSettingsRequest = builder.build();
 
-                    try {
-                        resolvable.startResolutionForResult((Activity) context, 51);
-                    } catch (IntentSender.SendIntentException e1) {
-                        e1.printStackTrace();
-                    }
-                }
+        SettingsClient settingsClient = LocationServices.getSettingsClient(context);
+        settingsClient.checkLocationSettings(locationSettingsRequest);
+
+        buildLocationCallback();
+
+        LocationServices.getFusedLocationProviderClient(context)
+                .requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+    }
+
+
+    private void buildLocationCallback() {
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                onLocationChanged(locationResult.getLastLocation());
             }
-        });
+        };
     }
 
     @SuppressLint("MissingPermission")
-    private void getDeviceLocation() {
-        mFusedLocationProviderClient.getLastLocation()
-                .addOnCompleteListener(new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            mLastKnowLocation = task.getResult();
-                            if (mLastKnowLocation != null) {
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnowLocation.getLatitude(), mLastKnowLocation.getLongitude()), 14));
-                            latstart =mLastKnowLocation.getLatitude();
-                               longstart = mLastKnowLocation.getLongitude();
-                               String latlng = String.valueOf(latstart)+","+String.valueOf(longstart);
-                               presenter.getMyLocationName(latlng);
-                                Log.d("sadasdas2", "latlng: "+latlng);
-                            } else {
-                                final LocationRequest locationRequest = LocationRequest.create();
-                                locationRequest.setInterval(10000);
-                                locationRequest.setFastestInterval(5000);
-                                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                                locationCallback = new LocationCallback() {
-                                    @Override
-                                    public void onLocationResult(LocationResult locationResult) {
-                                        super.onLocationResult(locationResult);
-                                        if (locationResult == null) {
-                                            return;
+    private void onLocationChanged(Location location) {
+        // GPS may be turned off
+        if (location == null) {
+            return;
+        }
+        currentLocationCount++;
+        // Report to the UI that the location was updated
+        mLastKnowLocation = location;
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        Log.d("asddasdasadsasd", "getMyLocation: "+location.getLatitude()+","+location.getLongitude());
+        latstart = location.getLatitude();
+        longstart = location.getLongitude();
+        String latlong = location.getLatitude()+","+location.getLongitude();
+        presenter.getMyLocationName(String.valueOf(latlong));
+        Toast.makeText(context, "laay thanh cong", Toast.LENGTH_SHORT).show();
+        presenter.getLocationDriver();
+        if (currentLocationCount == 1) {
+            LatLng latLng = new LatLng(mLastKnowLocation.getLatitude(), mLastKnowLocation.getLongitude());
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+            mMap.moveCamera(cameraUpdate);
 
-                                        }
-                                        mLastKnowLocation = locationResult.getLastLocation();
-                                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnowLocation.getLatitude(), mLastKnowLocation.getLongitude()), 15));
-                                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastKnowLocation.getLatitude(), mLastKnowLocation.getLongitude()), 15));
-                                        mFusedLocationProviderClient.removeLocationUpdates(locationCallback);
-                                    }
-                                };
-                                mFusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
+        }
 
-                            }
-                        } else {
-                            Toast.makeText(context, "unable Location", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
     }
 
 
@@ -559,6 +624,7 @@ RecyclerView recyclerView_typeBike;
     @Override
     public void getTypeBike(List<Result> results) {
         if (results!=null){
+            showProgress(false);
             viewTypeBike.setVisibility(View.VISIBLE);
             resultList = results;
             typeBikeAdapter = new TypeBikeAdapter(this,resultList,this);
@@ -595,8 +661,17 @@ RecyclerView recyclerView_typeBike;
 
     @Override
     public void showInformation(com.example.dagger2example.model.historydetail.Results results) {
+        if (results!= null){
+             dialogDriver = DialogDriver.newInstance(results);
+            dialogDriver.show(getSupportFragmentManager(),dialogDriver.getTag());
+        }
 
-        Toast.makeText(context, "Thông tin tài xế" +results.getUser().getFullName()+"Tên xe"+results.getUser().getLicence(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showLocationDriver(com.example.dagger2example.model.historydetail.Results results) {
+        Log.i("sadasdads", "lat: "+results.getUser().getCurrentLatitude()+"long"+results.getUser().getCurrentLongitude());
+
     }
 
 

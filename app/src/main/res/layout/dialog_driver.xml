@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+
+        android:id="@+id/img_avatar_driver"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/bg_login"
+        app:layout_constraintEnd_toEndOf="@+id/tv_name_driver"
+        app:layout_constraintStart_toStartOf="@+id/tv_name_driver"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="8dp" />
+
+    <TextView
+        android:layout_below="@+id/img_avatar_driver"
+        android:id="@+id/tv_name_driver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nguyễn duy"
+        android:textColor="@color/black"
+        android:textSize="12sp" />
+
+    <TextView
+        android:layout_below="@+id/tv_name_driver"
+        android:id="@+id/tv_name_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="huyndai"
+        android:textColor="@color/black"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_number_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name_car"
+        android:layout_marginTop="16dp"
+        android:text="29-B333333333333333"
+        android:textColor="@color/black"
+        android:textSize="12sp" />
+    <Button
+android:layout_below="@id/tv_number_car"
+        android:id="@+id/btn_close"
+        android:text="Close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

@@ -1,11 +1,14 @@
 
 package com.example.dagger2example.model.historydetail;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Trip {
+public class Trip implements Parcelable {
 
     @SerializedName("tripId")
     @Expose
@@ -66,7 +69,42 @@ public class Trip {
     private String tripDescription;
     @SerializedName("ratingTrip")
     @Expose
-    private Double ratingTrip;
+    private Long ratingTrip;
+
+    protected Trip(Parcel in) {
+        this.tripId = in.readString();
+        this.userId = in.readString();
+        this.driverId = in.readString();
+        this.vehicleId = in.readString();
+        this.tripPackageId = in.readString();
+        this.listPickUpPoint = in.createTypedArrayList(ListPickUpPoint.CREATOR);
+        this.tripStatus = in.readInt();
+        this.createdDate = in.readLong();
+        this.startDate = in.readLong();
+        this.endDate = in.readLong();
+        this.completedDate = in.readLong();
+        this.numberOfSeats = in.readLong();
+        this.numberOfVehicles = in.readLong();
+        this.estimatedDistance = in.readDouble();
+        this.estimatedDuration = in.readDouble();
+        this.estimatedPrice = in.readDouble();
+        this.distance = in.readDouble();
+        this.price = in.readDouble();
+        this.tripDescription = in.readString();
+        this.ratingTrip = in.readLong();
+    }
+
+    public static final Creator<Trip> CREATOR = new Creator<Trip>() {
+        @Override
+        public Trip createFromParcel(Parcel in) {
+            return new Trip(in);
+        }
+
+        @Override
+        public Trip[] newArray(int size) {
+            return new Trip[size];
+        }
+    };
 
     public String getTripId() {
         return tripId;
@@ -220,11 +258,41 @@ public class Trip {
         this.tripDescription = tripDescription;
     }
 
-    public Double getRatingTrip() {
+    public Long getRatingTrip() {
         return ratingTrip;
     }
 
-    public void setRatingTrip(Double ratingTrip) {
+    public void setRatingTrip(Long ratingTrip) {
         this.ratingTrip = ratingTrip;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(tripId);
+        parcel.writeString(userId);
+        parcel.writeString(driverId);
+        parcel.writeString(vehicleId);
+        parcel.writeString(tripPackageId);
+        parcel.writeTypedList(listPickUpPoint);
+        parcel.writeInt(tripStatus);
+        parcel.writeLong(createdDate);
+        parcel.writeLong(startDate);
+        parcel.writeLong(endDate);
+        parcel.writeLong(completedDate);
+        parcel.writeLong(numberOfSeats);
+        parcel.writeLong(numberOfVehicles);
+        parcel.writeDouble(estimatedDistance);
+        parcel.writeDouble(estimatedDuration);
+        parcel.writeDouble(estimatedPrice);
+        parcel.writeDouble(distance);
+        parcel.writeDouble(price);
+        parcel.writeString(tripDescription);
+        parcel.writeLong(ratingTrip);
+
     }
 }

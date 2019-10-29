@@ -19,6 +19,7 @@ public interface BookCarContract {
 
         void showName(List<com.example.dagger2example.model.geocode.Result> result);
         void showInformation(Results results);
+        void showLocationDriver(Results results);
 
     }
 
@@ -32,6 +33,7 @@ public interface BookCarContract {
         void getMyLocationName(String latlng);
 
         void getLastStatus();
+        void getLocationDriver();
     }
 
 }
